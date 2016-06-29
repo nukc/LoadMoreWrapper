@@ -1,0 +1,2 @@
+# RecyclerAdapter
+在不改动RecyclerView原有的adapter的情况下，使其拥有加载更多功能和自定义底部加载视图。
