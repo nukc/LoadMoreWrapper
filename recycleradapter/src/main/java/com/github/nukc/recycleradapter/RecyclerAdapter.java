@@ -27,6 +27,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
 
+    private boolean mLoadMoreEnabled = true;
+
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
     }
@@ -52,7 +54,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "create");
         if (viewType == TYPE_FOOTER) {
             if (mFooterResId != View.NO_ID) {
                 mFooterView = LayoutInflater.from(parent.getContext()).inflate(mFooterResId, parent, false);
@@ -70,8 +71,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.i(TAG, "bind");
-
         if (holder instanceof FooterHolder) {
             if (!canScroll()) {
                 holder.itemView.setVisibility(View.GONE);
@@ -84,12 +83,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         int count = mAdapter.getItemCount();
-        return count == 0 ? 0 : count + 1;
+        return count == 0 ? 0 : mLoadMoreEnabled ? count + 1 : count;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == mAdapter.getItemCount()) {
+        if (position == mAdapter.getItemCount() && mLoadMoreEnabled) {
             return TYPE_FOOTER;
         }
         return super.getItemViewType(position);
@@ -97,6 +96,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public boolean canScroll() {
         return ViewCompat.canScrollVertically(mRecyclerView, -1);
+    }
+
+    public void setLoadMoreEnabled(boolean enabled) {
+        mLoadMoreEnabled = enabled;
+    }
+
+    public boolean getLoadMoreEnabled() {
+        return mLoadMoreEnabled;
     }
 
     static class FooterHolder extends RecyclerView.ViewHolder {
@@ -113,7 +120,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        Log.i(TAG, "attached");
         mRecyclerView = recyclerView;
         recyclerView.addOnScrollListener(mOnScrollListener);
 
@@ -142,7 +148,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
 
-            if (!ViewCompat.canScrollVertically(recyclerView, -1)) {
+            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !mLoadMoreEnabled) {
                 Log.d(TAG, "recyclerView can not scroll!");
                 return;
             }

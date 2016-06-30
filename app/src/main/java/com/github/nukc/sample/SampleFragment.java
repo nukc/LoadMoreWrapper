@@ -87,11 +87,16 @@ public class SampleFragment extends Fragment {
                 throw new IllegalArgumentException();
         }
 
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mSampleAdapter);
+        final RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mSampleAdapter);
         recyclerView.setAdapter(recyclerAdapter);
         recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                //not enable load more
+                if (mSampleAdapter.getItemCount() > 50) {
+                    recyclerAdapter.setLoadMoreEnabled(false);
+                }
+
                 recyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
