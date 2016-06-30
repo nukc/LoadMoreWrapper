@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,7 @@ public class SampleFragment extends Fragment {
             @Override
             public void onLoadMore() {
                 //not enable load more
-                if (mSampleAdapter.getItemCount() > 50) {
+                if (mSampleAdapter.getItemCount() >= 40) {
                     recyclerAdapter.setLoadMoreEnabled(false);
                 }
 
@@ -135,8 +136,9 @@ public class SampleFragment extends Fragment {
         }
 
         public void addItem() {
+            final int positionStart = mCount;
             mCount+= 5;
-            notifyDataSetChanged();
+            notifyItemRangeInserted(positionStart, 5);
         }
 
         static class SampleHolder extends RecyclerView.ViewHolder {

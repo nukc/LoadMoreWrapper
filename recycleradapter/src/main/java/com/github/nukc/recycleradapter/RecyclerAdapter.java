@@ -28,6 +28,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private OnLoadMoreListener mOnLoadMoreListener;
 
     private boolean mLoadMoreEnabled = true;
+    private boolean mIsLoading = false;
 
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
@@ -156,7 +157,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
 
-            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !mLoadMoreEnabled) {
+            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !mLoadMoreEnabled || mIsLoading) {
                 Log.d(TAG, "recyclerView can not scroll!");
                 return;
             }
@@ -179,6 +180,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
                 if (layoutManager.getItemCount() > 0 && isBottom) {
+                    mIsLoading = true;
                     mOnLoadMoreListener.onLoadMore();
                 }
             }
@@ -220,32 +222,47 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView.AdapterDataObserver mObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
-            RecyclerAdapter.this.notifyDataSetChanged();
+            notifyFooterHolderChanged();
+            mIsLoading = false;
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
             RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount);
+            mIsLoading = false;
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
             RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount, payload);
+            mIsLoading = false;
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            RecyclerAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
+            notifyFooterHolderChanged();
+            mIsLoading = false;
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            RecyclerAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
+            RecyclerAdapter.this.notifyDataSetChanged();
+            mIsLoading = false;
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
             RecyclerAdapter.this.notifyItemMoved(fromPosition, toPosition);
+            mIsLoading = false;
         }
     };
+
+    private void notifyFooterHolderChanged() {
+        int itemCount = mAdapter.getItemCount();
+        if (mLoadMoreEnabled) {
+            RecyclerAdapter.this.notifyItemChanged(itemCount);
+        } else {
+            RecyclerAdapter.this.notifyItemChanged(itemCount - 1);
+        }
+    }
 }
