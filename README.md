@@ -28,7 +28,7 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
     setFooterView(View footerView)
 
-    setFooterView(@LayoutRes int resI
+    setFooterView(@LayoutRes int resId)
 ```
 
 to be continued...
