@@ -26,6 +26,9 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, @LayoutRes int resId)
 
+    setFooterView(View footerView)
+
+    setFooterView(@LayoutRes int resI
 ```
 
 to be continued...

@@ -106,6 +106,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mLoadMoreEnabled;
     }
 
+    public void setFooterView(View footerView) {
+        mFooterView = footerView;
+    }
+
+    public void setFooterView(@LayoutRes int resId) {
+        mFooterResId = resId;
+    }
+
     static class FooterHolder extends RecyclerView.ViewHolder {
 
         public FooterHolder(View itemView) {
