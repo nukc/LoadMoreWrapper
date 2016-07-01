@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
+ * 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
  * Created by C on 16/6/27.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -73,6 +74,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FooterHolder) {
+            // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的), 隐藏footerView
             if (!canScroll()) {
                 holder.itemView.setVisibility(View.GONE);
             }
@@ -96,13 +98,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public boolean canScroll() {
+        if (mRecyclerView == null) {
+            throw new NullPointerException("mRecyclerView is null, you must setAdapter(recyclerAdapter);");
+        }
         return ViewCompat.canScrollVertically(mRecyclerView, -1);
     }
 
+    /**
+     * 设置是否启用加载更多
+     * @param enabled 是否启用
+     */
     public void setLoadMoreEnabled(boolean enabled) {
         mLoadMoreEnabled = enabled;
     }
 
+    /**
+     * 获取是否启用了加载更多,默认是true
+     * @return boolean
+     */
     public boolean getLoadMoreEnabled() {
         return mLoadMoreEnabled;
     }
@@ -120,6 +133,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public FooterHolder(View itemView) {
             super(itemView);
 
+            //当为StaggeredGridLayoutManager的时候,设置footerView占据整整一行
             ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
             if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
                 ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
@@ -132,9 +146,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mRecyclerView = recyclerView;
         recyclerView.addOnScrollListener(mOnScrollListener);
 
+        //当为GridLayoutManager的时候, 设置footerView占据整整一行.
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             final GridLayoutManager gridLayoutManager = ((GridLayoutManager) layoutManager);
+            //获取原来的SpanSizeLookup,当不为null的时候,除了footerView都应该返回原来的spanSize
             final GridLayoutManager.SpanSizeLookup originalSizeLookup = gridLayoutManager.getSpanSizeLookup();
 
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -152,6 +168,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    /**
+     * Deciding whether to trigger loading
+     * 判断是否触发加载更多
+     */
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -203,6 +223,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return last;
     }
 
+    /**
+     * clean
+     */
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         recyclerView.removeOnScrollListener(mOnScrollListener);
@@ -257,6 +280,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     };
 
+    /**
+     *  update last item
+     */
     private void notifyFooterHolderChanged() {
         int itemCount = mAdapter.getItemCount();
         if (mLoadMoreEnabled) {
