@@ -86,7 +86,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         int count = mAdapter.getItemCount();
-        return count == 0 ? 0 : mLoadMoreEnabled ? count + 1 : count;
+        return mLoadMoreEnabled ? count + 1 : count;
     }
 
     @Override
