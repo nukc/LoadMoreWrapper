@@ -28,7 +28,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
 
-    private boolean mLoadMoreEnabled = true;
+    private Enabled mEnabled;
     private boolean mIsLoading = false;
 
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter) {
@@ -52,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         mAdapter = adapter;
         mAdapter.registerAdapterDataObserver(mObserver);
+        mEnabled = new Enabled();
     }
 
     @Override
@@ -86,12 +87,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         int count = mAdapter.getItemCount();
-        return mLoadMoreEnabled ? count + 1 : count;
+        return getLoadMoreEnabled() ? count + 1 : count;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == mAdapter.getItemCount() && mLoadMoreEnabled) {
+        if (position == mAdapter.getItemCount() && getLoadMoreEnabled()) {
             return TYPE_FOOTER;
         }
         return super.getItemViewType(position);
@@ -102,22 +103,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             throw new NullPointerException("mRecyclerView is null, you must setAdapter(recyclerAdapter);");
         }
         return ViewCompat.canScrollVertically(mRecyclerView, -1);
-    }
-
-    /**
-     * 设置是否启用加载更多
-     * @param enabled 是否启用
-     */
-    public void setLoadMoreEnabled(boolean enabled) {
-        mLoadMoreEnabled = enabled;
-    }
-
-    /**
-     * 获取是否启用了加载更多,默认是true
-     * @return boolean
-     */
-    public boolean getLoadMoreEnabled() {
-        return mLoadMoreEnabled;
     }
 
     public void setFooterView(View footerView) {
@@ -177,7 +162,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
 
-            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !mLoadMoreEnabled || mIsLoading) {
+            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !getLoadMoreEnabled() || mIsLoading) {
                 Log.d(TAG, "recyclerView can not scroll!");
                 return;
             }
@@ -201,7 +186,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 if (layoutManager.getItemCount() > 0 && isBottom) {
                     mIsLoading = true;
-                    mOnLoadMoreListener.onLoadMore();
+                    mOnLoadMoreListener.onLoadMore(mEnabled);
                 }
             }
         }
@@ -212,7 +197,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     };
 
-    //取到最后的一个节点
+    /**
+     * 取到最后的一个节点
+     */
     private static int last(int[] lastPositions) {
         int last = lastPositions[0];
         for (int value : lastPositions) {
@@ -233,13 +220,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mRecyclerView = null;
     }
 
-
     public void setLoadMoreListener(OnLoadMoreListener listener) {
         mOnLoadMoreListener = listener;
     }
 
     public interface OnLoadMoreListener{
-        void onLoadMore();
+        void onLoadMore(Enabled enabled);
+    }
+
+    public void setLoadMoreEnabled(boolean enabled) {
+        mEnabled.setLoadMoreEnabled(enabled);
+    }
+
+    public boolean getLoadMoreEnabled() {
+        return mEnabled.getLoadMoreEnabled();
+    }
+
+    /**
+     * 控制加载更多的开关, 作为 {@link OnLoadMoreListener onLoadMore(Enabled enabled) 的参数}
+     */
+    public static class Enabled {
+        private boolean mLoadMoreEnabled = true;
+
+        /**
+         * 设置是否启用加载更多
+         * @param enabled 是否启用
+         */
+        public void setLoadMoreEnabled(boolean enabled) {
+            mLoadMoreEnabled = enabled;
+        }
+
+        /**
+         * 获取是否启用了加载更多,默认是true
+         * @return boolean
+         */
+        public boolean getLoadMoreEnabled() {
+            return mLoadMoreEnabled;
+        }
     }
 
     private RecyclerView.AdapterDataObserver mObserver = new RecyclerView.AdapterDataObserver() {
@@ -285,7 +302,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     private void notifyFooterHolderChanged() {
         int itemCount = mAdapter.getItemCount();
-        if (mLoadMoreEnabled) {
+        if (getLoadMoreEnabled()) {
             RecyclerAdapter.this.notifyItemChanged(itemCount);
         } else {
             RecyclerAdapter.this.notifyItemChanged(itemCount - 1);

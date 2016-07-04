@@ -6,6 +6,8 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import com.github.nukc.recycleradapter.RecyclerAdapter;
+import com.github.nukc.recycleradapter.RecyclerWrapper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,6 +31,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class SampleFragment extends Fragment {
 
+    private static final String TAG = SampleFragment.class.getSimpleName();
     private static final String ARGS_COUNT = "count";
     private static final String ARGS_MANAGER_MODE = "managerMode";
 
@@ -88,24 +93,45 @@ public class SampleFragment extends Fragment {
                 throw new IllegalArgumentException();
         }
 
-        final RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mSampleAdapter);
-        recyclerView.setAdapter(recyclerAdapter);
-        recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                //not enable load more
-                if (mSampleAdapter.getItemCount() >= 40) {
-                    recyclerAdapter.setLoadMoreEnabled(false);
-                }
 
-                recyclerView.postDelayed(new Runnable() {
+//        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mSampleAdapter);
+//        recyclerView.setAdapter(recyclerAdapter);
+//        recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+//                //not enable load more
+//                if (mSampleAdapter.getItemCount() >= 40) {
+//                    enabled.setLoadMoreEnabled(false);
+//                }
+//
+//                recyclerView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mSampleAdapter.addItem();
+//                    }
+//                }, 1200);
+//            }
+//        });
+
+        RecyclerWrapper.with(mSampleAdapter)
+//                .setFooterView()
+                .setListener(new RecyclerAdapter.OnLoadMoreListener() {
                     @Override
-                    public void run() {
-                        mSampleAdapter.addItem();
+                    public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+                        //not enable load more
+                        if (mSampleAdapter.getItemCount() >= 40) {
+                            enabled.setLoadMoreEnabled(false);
+                        }
+
+                        recyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSampleAdapter.addItem();
+                            }
+                        }, 1200);
                     }
-                }, 1200);
-            }
-        });
+                })
+                .into(recyclerView);
 
         return view;
     }

@@ -4,12 +4,13 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
 
+为什么有这个项目呢? 因为项目做了好几个页面后,发现很多都没有做加载更多,一个一个写就太没意思了,用开源的又要对代码进行不少的改动,然后就有了这个项目.
 
 #Installation
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.2.1'
+    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.0'
 ```
 
 # Usage
@@ -23,10 +24,14 @@ add the dependency to your build.gradle:
     //set load more listener
     recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
         @Override
-        public void onLoadMore() {
-            //load data
+        public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+            //do something
+            //you can enabled.setLoadMoreEnabled(false) when do not need load more
         }
     });
+
+    //设置是否启用加载更多
+    setLoadMoreEnabled(boolean enabled)
 
     //customize the footer view
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, View footerView)
@@ -38,4 +43,18 @@ add the dependency to your build.gradle:
     setFooterView(@LayoutRes int resId)
 ```
 
+since v0.3.0, you can :
+
+```java
+    RecyclerWrapper.with(mSampleAdapter)
+        .setFooterView(...)
+        .setListener(new RecyclerAdapter.OnLoadMoreListener() {
+             @Override
+             public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+                 //do something
+             })
+        .into(recyclerView);
+```
+
+在纠结要不要加下拉刷新...
 to be continued...
