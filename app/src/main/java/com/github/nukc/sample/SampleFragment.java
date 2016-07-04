@@ -103,7 +103,7 @@ public class SampleFragment extends Fragment {
                     public void run() {
                         mSampleAdapter.addItem();
                     }
-                }, 1500);
+                }, 1200);
             }
         });
 
