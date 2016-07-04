@@ -4,7 +4,7 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
 
-为什么有这个项目呢? 因为项目做了好几个页面后,发现很多都没有做加载更多,一个一个写就太没意思了,用开源的又要对代码进行不少的改动,然后就有了这个项目.
+在项目做了好几个页面后, 发现很多都没有做加载更多, 一个一个写很累人的, 用开源的又要对代码进行不少的改动, 然后就有了这个项目.
 
 #Installation
 
