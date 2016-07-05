@@ -97,12 +97,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (position == mAdapter.getItemCount() && getLoadMoreEnabled()) {
             return TYPE_FOOTER;
         }
-        return super.getItemViewType(position);
+        return mAdapter.getItemViewType(position);
     }
 
     public boolean canScroll() {
         if (mRecyclerView == null) {
-            throw new NullPointerException("mRecyclerView is null, you must setAdapter(recyclerAdapter);");
+            throw new NullPointerException("mRecyclerView is null, you should setAdapter(recyclerAdapter);");
         }
         return ViewCompat.canScrollVertically(mRecyclerView, -1);
     }
