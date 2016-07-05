@@ -78,6 +78,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的), 隐藏footerView
             if (!canScroll()) {
                 holder.itemView.setVisibility(View.GONE);
+            } else {
+                holder.itemView.setVisibility(View.VISIBLE);
             }
         } else {
             mAdapter.onBindViewHolder(holder, position);

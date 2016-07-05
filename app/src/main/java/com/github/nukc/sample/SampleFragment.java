@@ -114,7 +114,7 @@ public class SampleFragment extends Fragment {
 //        });
 
         RecyclerWrapper.with(mSampleAdapter)
-//                .setFooterView()
+                .setFooterView(managerMode == MODE_GRIDLAYOUT ? R.layout.view_footer : -1)
                 .setListener(new RecyclerAdapter.OnLoadMoreListener() {
                     @Override
                     public void onLoadMore(RecyclerAdapter.Enabled enabled) {
