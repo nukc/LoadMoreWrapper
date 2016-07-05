@@ -306,7 +306,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int itemCount = mAdapter.getItemCount();
 
         // should not notify item changed
+        // but should notifyDataSetChanged when data changes
         if (itemCount == 0) {
+            notifyDataSetChanged();
             return;
         }
 
