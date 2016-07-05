@@ -6,18 +6,33 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
 在项目做了好几个页面后, 发现很多都没有做加载更多, 一个一个写很累人的, 用开源的又要对代码进行不少的改动, 然后就有了这个项目.
 
-#Installation
+## Installation
 
 add the dependency to your build.gradle:
 ```
     compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.1'
 ```
 
-# Usage
+## Usage
+
+since v0.3.0, you can :
 
 ```java
-
     //the adapter is the original (这个adapter是原有的, 不改动它)
+    RecyclerWrapper.with(adapter)
+        .setFooterView(...)
+        .setListener(new RecyclerAdapter.OnLoadMoreListener() {
+             @Override
+             public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+                 //do something
+                 //you can enabled.setLoadMoreEnabled(false) when do not need load more
+             })
+        .into(recyclerView);
+```
+
+general :
+
+```java
     RecyclerAdapter recyclerAdapter = new RecyclerAdapter(adapter);
     recyclerView.setAdapter(recyclerAdapter);
 
@@ -26,7 +41,6 @@ add the dependency to your build.gradle:
         @Override
         public void onLoadMore(RecyclerAdapter.Enabled enabled) {
             //do something
-            //you can enabled.setLoadMoreEnabled(false) when do not need load more
         }
     });
 
@@ -43,18 +57,21 @@ add the dependency to your build.gradle:
     setFooterView(@LayoutRes int resId)
 ```
 
-since v0.3.0, you can :
-
-```java
-    RecyclerWrapper.with(mSampleAdapter)
-        .setFooterView(...)
-        .setListener(new RecyclerAdapter.OnLoadMoreListener() {
-             @Override
-             public void onLoadMore(RecyclerAdapter.Enabled enabled) {
-                 //do something
-             })
-        .into(recyclerView);
-```
-
 在纠结要不要加下拉刷新...
 to be continued...
+
+## License
+
+    Copyright 2015, nukc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
