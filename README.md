@@ -10,7 +10,7 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.1'
+    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.2'
 ```
 
 ## Usage

@@ -304,6 +304,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     private void notifyFooterHolderChanged() {
         int itemCount = mAdapter.getItemCount();
+
+        // should not notify item changed
+        if (itemCount == 0) {
+            return;
+        }
+
         if (getLoadMoreEnabled()) {
             RecyclerAdapter.this.notifyItemChanged(itemCount);
         } else {
