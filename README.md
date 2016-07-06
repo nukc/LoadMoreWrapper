@@ -4,13 +4,11 @@ Without changes to the original adater of recyclerView, make recyclerView suppor
 
 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
 
-在项目做了好几个页面后, 发现很多都没有做加载更多, 一个一个写很累人的, 用开源的又要对代码进行不少的改动, 然后就有了这个项目.
-
 ## Installation
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.4'
+    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.5'
 ```
 
 ## Usage
@@ -56,6 +54,8 @@ general :
 
     setFooterView(@LayoutRes int resId)
 ```
+
+欢迎大家issues, star, fork, PR.
 
 在纠结要不要加下拉刷新...
 to be continued...

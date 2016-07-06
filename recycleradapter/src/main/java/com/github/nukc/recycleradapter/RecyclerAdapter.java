@@ -264,7 +264,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView.AdapterDataObserver mObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
-            notifyFooterHolderChanged();
+            RecyclerAdapter.this.notifyDataSetChanged();
             mIsLoading = false;
         }
 
