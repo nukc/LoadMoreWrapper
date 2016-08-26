@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             int managerMode = SampleFragment.MODE_LINEARLAYOUT;
             switch (position) {
                 case 0:
-                    count = 15;
+                    count = 2;
                     break;
                 case 1:
-                    count = 2;
+                    count = 15;
                     break;
                 case 2:
                     count = 20;

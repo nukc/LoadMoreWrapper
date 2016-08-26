@@ -75,11 +75,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FooterHolder) {
-            // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的), 隐藏footerView
-            if (!canScroll()) {
-                holder.itemView.setVisibility(View.GONE);
-            } else {
-                holder.itemView.setVisibility(View.VISIBLE);
+            // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的)
+            // 触发loadMore
+            if (!canScroll() && mOnLoadMoreListener != null) {
+                mOnLoadMoreListener.onLoadMore(mEnabled);
             }
         } else {
             mAdapter.onBindViewHolder(holder, position);
@@ -164,8 +163,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
 
-            if (!ViewCompat.canScrollVertically(recyclerView, -1) || !getLoadMoreEnabled() || mIsLoading) {
-                Log.d(TAG, "recyclerView can not scroll!");
+            if (!getLoadMoreEnabled() || mIsLoading) {
                 return;
             }
 

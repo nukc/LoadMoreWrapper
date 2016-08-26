@@ -1,14 +1,24 @@
 # RecyclerAdapter
 
-Make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
+[ ![Download](https://api.bintray.com/packages/nukc/maven/RecyclerAdapter/images/download.svg) ](https://bintray.com/nukc/maven/RecyclerAdapter/_latestVersion)
+
+make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
 
 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
+
+- 支持当item未铺满屏幕的时候仍能够加载更多
+- 支持自定义加载视图
+- 当layoutManager为Grid和StaggeredGrid的时候, 加载更多视图footerView仍占据一行
+
+<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/item.gif">
+<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/grid_custom.gif">
+<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/staggeredgrid.gif">
 
 ## Installation
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.5'
+    compile 'com.github.nukc.recycleradapter:recycleradapter:0.3.6'
 ```
 
 ## Usage
@@ -18,7 +28,7 @@ since v0.3.0, you can :
 ```java
     //the adapter is the original (这个adapter是原有的, 不改动它)
     RecyclerWrapper.with(adapter)
-        .setFooterView(...)
+        .setFooterView(...) // view or layout resource
         .setListener(new RecyclerAdapter.OnLoadMoreListener() {
              @Override
              public void onLoadMore(RecyclerAdapter.Enabled enabled) {
@@ -55,10 +65,6 @@ general :
     setFooterView(@LayoutRes int resId)
 ```
 
-欢迎大家issues, star, fork, PR.
-
-在纠结要不要加下拉刷新...
-to be continued...
 
 ## License
 

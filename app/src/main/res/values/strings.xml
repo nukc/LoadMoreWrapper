@@ -2,8 +2,8 @@
     <string name="app_name">RecyclerAdapter</string>
 
     <string-array name="tab_main">
-        <item>Default</item>
         <item>Item not covered</item>
+        <item>Default</item>
         <item>GridLayoutManager</item>
         <item>StaggeredGridLayoutManager</item>
     </string-array>

@@ -40,7 +40,7 @@ install {
 }
 
 // This is the library version used when deploying the artifact
-version = "0.3.5"
+version = "0.3.6"
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
