@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private OnLoadMoreListener mOnLoadMoreListener;
 
     private Enabled mEnabled;
-    private boolean mIsLoading = false;
+    private boolean mIsLoading;
+    private boolean mShouldRemove;
 
     public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
@@ -52,7 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         mAdapter = adapter;
         mAdapter.registerAdapterDataObserver(mObserver);
-        mEnabled = new Enabled();
+        mEnabled = new Enabled(mOnEnabledListener);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         int count = mAdapter.getItemCount();
-        return getLoadMoreEnabled() ? count + 1 : count;
+        return getLoadMoreEnabled()? count + 1 : count + (mShouldRemove ? 1 : 0);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             >= layoutManager.getItemCount() - 1;
                 }
 
-                if (layoutManager.getItemCount() > 0 && isBottom) {
+                if (isBottom) {
                     mIsLoading = true;
                     mOnLoadMoreListener.onLoadMore(mEnabled);
                 }
@@ -233,21 +233,42 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public boolean getLoadMoreEnabled() {
-        return mEnabled.getLoadMoreEnabled();
+        return mEnabled.getLoadMoreEnabled() && mAdapter.getItemCount() > 0;
     }
+
+    private interface OnEnabledListener {
+        void notifyChanged();
+    }
+
+    private OnEnabledListener mOnEnabledListener = new OnEnabledListener() {
+        @Override
+        public void notifyChanged() {
+            mShouldRemove = true;
+        }
+    };
 
     /**
      * 控制加载更多的开关, 作为 {@link OnLoadMoreListener onLoadMore(Enabled enabled) 的参数}
      */
     public static class Enabled {
         private boolean mLoadMoreEnabled = true;
+        private OnEnabledListener mListener;
+
+        public Enabled(OnEnabledListener listener) {
+            mListener = listener;
+        }
 
         /**
          * 设置是否启用加载更多
          * @param enabled 是否启用
          */
         public void setLoadMoreEnabled(boolean enabled) {
+            final boolean canNotify = mLoadMoreEnabled;
             mLoadMoreEnabled = enabled;
+
+            if (canNotify && !mLoadMoreEnabled) {
+                mListener.notifyChanged();
+            }
         }
 
         /**
@@ -280,13 +301,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
+            RecyclerAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
             notifyFooterHolderChanged();
             mIsLoading = false;
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-            RecyclerAdapter.this.notifyDataSetChanged();
+            RecyclerAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
             mIsLoading = false;
         }
 
@@ -301,19 +323,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      *  update last item
      */
     private void notifyFooterHolderChanged() {
-        int itemCount = mAdapter.getItemCount();
-
-        // should not notify item changed
-        // but should notifyDataSetChanged when data changes
-        if (itemCount == 0) {
-            notifyDataSetChanged();
-            return;
-        }
-
         if (getLoadMoreEnabled()) {
-            RecyclerAdapter.this.notifyItemChanged(itemCount);
-        } else {
-            RecyclerAdapter.this.notifyItemChanged(itemCount - 1);
+            RecyclerAdapter.this.notifyItemChanged(mAdapter.getItemCount());
+        } else if (mShouldRemove) {
+            mShouldRemove = false;
+
+            /**
+             * fix IndexOutOfBoundsException when setLoadMoreEnabled(false) and then use onItemRangeInserted
+             * @see android.support.v7.widget.RecyclerView.Recycler
+             * boolean validateViewHolderForOffsetPosition(ViewHolder holder)
+             */
+            int position = mAdapter.getItemCount();
+            RecyclerView.ViewHolder viewHolder =
+                    mRecyclerView.findViewHolderForAdapterPosition(position);
+            if (viewHolder instanceof FooterHolder) {
+                RecyclerAdapter.this.notifyItemRemoved(position);
+            }
         }
     }
 }

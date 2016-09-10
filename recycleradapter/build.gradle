@@ -5,10 +5,10 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 24
         versionCode 10
-        versionName "0.3.6"
+        versionName "0.4.0"
     }
     buildTypes {
         release {
@@ -18,11 +18,15 @@ android {
     }
 }
 
+ext {
+    supportLibVersion = '24.2.0'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 }
 
 apply from: '../bintray.gradle'

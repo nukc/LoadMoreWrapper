@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.github.nukc.sample"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -19,12 +19,16 @@ android {
     }
 }
 
+ext {
+    supportLibVersion = '24.2.0'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:support-v4:${supportLibVersion}"
     compile project(":recycleradapter");
 }
