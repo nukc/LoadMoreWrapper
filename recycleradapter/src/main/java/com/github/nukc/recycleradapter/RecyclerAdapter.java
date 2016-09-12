@@ -93,7 +93,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (position == mAdapter.getItemCount() && getLoadMoreEnabled()) {
+        if (position == mAdapter.getItemCount() && (getLoadMoreEnabled() || mShouldRemove)) {
             return TYPE_FOOTER;
         }
         return mAdapter.getItemViewType(position);
@@ -283,18 +283,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private RecyclerView.AdapterDataObserver mObserver = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
+            if (mShouldRemove) {
+                mShouldRemove = false;
+            }
             RecyclerAdapter.this.notifyDataSetChanged();
             mIsLoading = false;
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
+            if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
+                mShouldRemove = false;
+            }
             RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount);
             mIsLoading = false;
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+            if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
+                mShouldRemove = false;
+            }
             RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount, payload);
             mIsLoading = false;
         }
@@ -308,12 +317,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
+            if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
+                mShouldRemove = false;
+            }
             RecyclerAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
             mIsLoading = false;
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+            if (mShouldRemove && (fromPosition == mAdapter.getItemCount() || toPosition == mAdapter.getItemCount())) {
+                throw new IllegalArgumentException("can not move last position after setLoadMoreEnabled(false)");
+            }
             RecyclerAdapter.this.notifyItemMoved(fromPosition, toPosition);
             mIsLoading = false;
         }
