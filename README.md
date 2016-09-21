@@ -18,7 +18,7 @@ make recyclerView supports load more and customize the footer view, without chan
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.4.1'
+    compile 'com.github.nukc.recycleradapter:recycleradapter:0.4.2'
 ```
 
 ## Usage

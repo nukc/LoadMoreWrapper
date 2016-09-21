@@ -77,7 +77,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof FooterHolder) {
             // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的)
             // 触发loadMore
-            if (!canScroll() && mOnLoadMoreListener != null) {
+            if (!canScroll() && mOnLoadMoreListener != null && !mIsLoading) {
+                mIsLoading = true;
                 mOnLoadMoreListener.onLoadMore(mEnabled);
             }
         } else {
