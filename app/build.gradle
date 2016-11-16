@@ -30,5 +30,5 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.android.support:support-v4:${supportLibVersion}"
-    compile project(":recycleradapter");
+    compile project(':recyclerwrapper');
 }

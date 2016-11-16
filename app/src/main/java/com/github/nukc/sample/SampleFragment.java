@@ -2,25 +2,20 @@ package com.github.nukc.sample;
 
 
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.TextView;
 
-import com.github.nukc.recycleradapter.RecyclerAdapter;
-import com.github.nukc.recycleradapter.RecyclerWrapper;
+import com.github.nukc.LoadMoreWrapper.LoadMoreAdapter;
+import com.github.nukc.LoadMoreWrapper.LoadMoreWrapper;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -94,11 +89,11 @@ public class SampleFragment extends Fragment {
         }
 
 
-//        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mSampleAdapter);
+//        LoadMoreAdapter recyclerAdapter = new LoadMoreAdapter(mSampleAdapter);
 //        recyclerView.setAdapter(recyclerAdapter);
-//        recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
+//        recyclerAdapter.setLoadMoreListener(new LoadMoreAdapter.OnLoadMoreListener() {
 //            @Override
-//            public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+//            public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
 //                //not enable load more
 //                if (mSampleAdapter.getItemCount() >= 40) {
 //                    enabled.setLoadMoreEnabled(false);
@@ -113,11 +108,11 @@ public class SampleFragment extends Fragment {
 //            }
 //        });
 
-        RecyclerWrapper.with(mSampleAdapter)
+        LoadMoreWrapper.with(mSampleAdapter)
                 .setFooterView(managerMode == MODE_GRIDLAYOUT ? R.layout.view_footer : -1)
-                .setListener(new RecyclerAdapter.OnLoadMoreListener() {
+                .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
                     @Override
-                    public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+                    public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
                         //not enable load more
                         if (mSampleAdapter.getItemCount() >= 40) {
                             enabled.setLoadMoreEnabled(false);

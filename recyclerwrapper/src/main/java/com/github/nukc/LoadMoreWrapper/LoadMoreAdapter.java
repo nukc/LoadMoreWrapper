@@ -1,4 +1,4 @@
-package com.github.nukc.recycleradapter;
+package com.github.nukc.LoadMoreWrapper;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -15,9 +15,9 @@ import android.view.ViewGroup;
  * 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
  * Created by C on 16/6/27.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static final String TAG = RecyclerAdapter.class.getSimpleName();
+    private static final String TAG = LoadMoreAdapter.class.getSimpleName();
     private static final byte TYPE_FOOTER = -2;
 
     private RecyclerView.Adapter mAdapter;
@@ -31,16 +31,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsLoading;
     private boolean mShouldRemove;
 
-    public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter) {
+    public LoadMoreAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
     }
 
-    public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, View footerView) {
+    public LoadMoreAdapter(@NonNull RecyclerView.Adapter adapter, View footerView) {
         registerAdapter(adapter);
         mFooterView = footerView;
     }
 
-    public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, @LayoutRes int resId) {
+    public LoadMoreAdapter(@NonNull RecyclerView.Adapter adapter, @LayoutRes int resId) {
         registerAdapter(adapter);
         mFooterResId = resId;
     }
@@ -287,7 +287,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove) {
                 mShouldRemove = false;
             }
-            RecyclerAdapter.this.notifyDataSetChanged();
+            LoadMoreAdapter.this.notifyDataSetChanged();
             mIsLoading = false;
         }
 
@@ -296,7 +296,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
                 mShouldRemove = false;
             }
-            RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount);
+            LoadMoreAdapter.this.notifyItemRangeChanged(positionStart, itemCount);
             mIsLoading = false;
         }
 
@@ -305,13 +305,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
                 mShouldRemove = false;
             }
-            RecyclerAdapter.this.notifyItemRangeChanged(positionStart, itemCount, payload);
+            LoadMoreAdapter.this.notifyItemRangeChanged(positionStart, itemCount, payload);
             mIsLoading = false;
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-            RecyclerAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
+            LoadMoreAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
             notifyFooterHolderChanged();
             mIsLoading = false;
         }
@@ -321,7 +321,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
                 mShouldRemove = false;
             }
-            RecyclerAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
+            LoadMoreAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
             mIsLoading = false;
         }
 
@@ -330,7 +330,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove && (fromPosition == mAdapter.getItemCount() || toPosition == mAdapter.getItemCount())) {
                 throw new IllegalArgumentException("can not move last position after setLoadMoreEnabled(false)");
             }
-            RecyclerAdapter.this.notifyItemMoved(fromPosition, toPosition);
+            LoadMoreAdapter.this.notifyItemMoved(fromPosition, toPosition);
             mIsLoading = false;
         }
     };
@@ -340,7 +340,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     private void notifyFooterHolderChanged() {
         if (getLoadMoreEnabled()) {
-            RecyclerAdapter.this.notifyItemChanged(mAdapter.getItemCount());
+            LoadMoreAdapter.this.notifyItemChanged(mAdapter.getItemCount());
         } else if (mShouldRemove) {
             mShouldRemove = false;
 
@@ -353,7 +353,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             RecyclerView.ViewHolder viewHolder =
                     mRecyclerView.findViewHolderForAdapterPosition(position);
             if (viewHolder instanceof FooterHolder) {
-                RecyclerAdapter.this.notifyItemRemoved(position);
+                LoadMoreAdapter.this.notifyItemRemoved(position);
             }
         }
     }

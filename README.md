@@ -1,6 +1,6 @@
-# RecyclerAdapter
+# LoadMoreWrapper
 
-[ ![Download](https://api.bintray.com/packages/nukc/maven/RecyclerAdapter/images/download.svg) ](https://bintray.com/nukc/maven/RecyclerAdapter/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/nukc/maven/LoadMoreWrapper/images/download.svg) ](https://bintray.com/nukc/maven/LoadMoreWrapper/_latestVersion)
 
 make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
 
@@ -10,61 +10,31 @@ make recyclerView supports load more and customize the footer view, without chan
 - 支持自定义加载视图
 - 当layoutManager为Grid和StaggeredGrid的时候, 加载更多视图footerView仍占据一行
 
-<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/item.gif">
-<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/grid_custom.gif">
-<img src="https://raw.githubusercontent.com/nukc/recycleradapter/master/images/staggeredgrid.gif">
+<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif">
+<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif">
+<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif">
 
 ## Installation
 
 add the dependency to your build.gradle:
 ```
-    compile 'com.github.nukc.recycleradapter:recycleradapter:0.4.2'
+    compile 'com.github.nukc:LoadMoreWrapper:1.0'
 ```
 
 ## Usage
 
-since v0.3.0, you can :
-
 ```java
     //the adapter is the original (这个adapter是原有的, 不改动它)
-    RecyclerWrapper.with(adapter)
+    LoadMoreWrapper.with(adapter)
         .setFooterView(...) // view or layout resource
-        .setListener(new RecyclerAdapter.OnLoadMoreListener() {
+        .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
              @Override
-             public void onLoadMore(RecyclerAdapter.Enabled enabled) {
+             public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
                  //do something
                  //you can enabled.setLoadMoreEnabled(false) when do not need load more
              })
         .into(recyclerView);
 ```
-
-general :
-
-```java
-    RecyclerAdapter recyclerAdapter = new RecyclerAdapter(adapter);
-    recyclerView.setAdapter(recyclerAdapter);
-
-    //set load more listener
-    recyclerAdapter.setLoadMoreListener(new RecyclerAdapter.OnLoadMoreListener() {
-        @Override
-        public void onLoadMore(RecyclerAdapter.Enabled enabled) {
-            //do something
-        }
-    });
-
-    //设置是否启用加载更多
-    setLoadMoreEnabled(boolean enabled)
-
-    //customize the footer view
-    public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, View footerView)
-
-    public RecyclerAdapter(@NonNull RecyclerView.Adapter adapter, @LayoutRes int resId)
-
-    setFooterView(View footerView)
-
-    setFooterView(@LayoutRes int resId)
-```
-
 
 ## License
 
