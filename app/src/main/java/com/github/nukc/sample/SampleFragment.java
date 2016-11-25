@@ -110,6 +110,7 @@ public class SampleFragment extends Fragment {
 
         LoadMoreWrapper.with(mSampleAdapter)
                 .setFooterView(managerMode == MODE_GRIDLAYOUT ? R.layout.view_footer : -1)
+//                .setLoadMoreEnabled(false)
                 .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
                     @Override
                     public void onLoadMore(LoadMoreAdapter.Enabled enabled) {

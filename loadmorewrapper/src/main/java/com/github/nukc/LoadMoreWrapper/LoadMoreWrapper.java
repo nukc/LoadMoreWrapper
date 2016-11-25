@@ -35,6 +35,14 @@ public class LoadMoreWrapper {
         return this;
     }
 
+    public LoadMoreWrapper setLoadMoreEnabled(boolean enabled) {
+        mLoadMoreAdapter.setLoadMoreEnabled(enabled);
+        if (!enabled) {
+            mLoadMoreAdapter.setShouldRemove(enabled);
+        }
+        return this;
+    }
+
     public LoadMoreAdapter into(RecyclerView recyclerView) {
         recyclerView.setAdapter(mLoadMoreAdapter);
         return mLoadMoreAdapter;

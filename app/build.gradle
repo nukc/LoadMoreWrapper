@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.github.nukc.sample"
+        applicationId "com.github.nukc.loadmorewrapper.sample"
         minSdkVersion 9
         targetSdkVersion 24
         versionCode 1
@@ -30,5 +30,5 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.android.support:support-v4:${supportLibVersion}"
-    compile project(':recyclerwrapper');
+    compile project(':loadmorewrapper');
 }

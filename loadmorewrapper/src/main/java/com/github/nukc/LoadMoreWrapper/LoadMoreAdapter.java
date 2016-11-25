@@ -248,6 +248,10 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     };
 
+    public void setShouldRemove(boolean shouldRemove) {
+        mShouldRemove = shouldRemove;
+    }
+
     /**
      * 控制加载更多的开关, 作为 {@link OnLoadMoreListener onLoadMore(Enabled enabled) 的参数}
      */
