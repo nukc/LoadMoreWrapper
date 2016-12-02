@@ -55,6 +55,10 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mEnabled = new Enabled(mOnEnabledListener);
     }
 
+    public RecyclerView.Adapter getRealAdapter() {
+        return mAdapter;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {

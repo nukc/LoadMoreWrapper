@@ -9,7 +9,7 @@ import android.view.View;
  */
 public class LoadMoreWrapper {
 
-    private LoadMoreAdapter mLoadMoreAdapter;
+    private final LoadMoreAdapter mLoadMoreAdapter;
 
     public LoadMoreWrapper(LoadMoreAdapter loadMoreAdapter) {
         mLoadMoreAdapter = loadMoreAdapter;
@@ -41,6 +41,10 @@ public class LoadMoreWrapper {
             mLoadMoreAdapter.setShouldRemove(enabled);
         }
         return this;
+    }
+
+    public RecyclerView.Adapter getRealAdapter() {
+        return mLoadMoreAdapter.getRealAdapter();
     }
 
     public LoadMoreAdapter into(RecyclerView recyclerView) {
