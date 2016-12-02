@@ -43,8 +43,8 @@ public class LoadMoreWrapper {
         return this;
     }
 
-    public RecyclerView.Adapter getRealAdapter() {
-        return mLoadMoreAdapter.getRealAdapter();
+    public RecyclerView.Adapter getOriginalAdapter() {
+        return mLoadMoreAdapter.getOriginalAdapter();
     }
 
     public LoadMoreAdapter into(RecyclerView recyclerView) {

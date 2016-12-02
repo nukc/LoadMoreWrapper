@@ -18,7 +18,7 @@ make recyclerView supports load more and customize the footer view, without chan
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:LoadMoreWrapper:1.0'
+    compile 'com.github.nukc:LoadMoreWrapper:1.1'
 ```
 
 ## Usage

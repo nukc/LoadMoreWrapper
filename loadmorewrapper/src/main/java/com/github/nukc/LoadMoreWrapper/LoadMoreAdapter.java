@@ -55,7 +55,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mEnabled = new Enabled(mOnEnabledListener);
     }
 
-    public RecyclerView.Adapter getRealAdapter() {
+    public RecyclerView.Adapter getOriginalAdapter() {
         return mAdapter;
     }
 
