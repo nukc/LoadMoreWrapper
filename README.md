@@ -1,6 +1,7 @@
 # LoadMoreWrapper
 
 [ ![Download](https://api.bintray.com/packages/nukc/maven/LoadMoreWrapper/images/download.svg) ](https://bintray.com/nukc/maven/LoadMoreWrapper/_latestVersion)
+[![](https://jitpack.io/v/nukc/LoadMoreWrapper.svg)](https://jitpack.io/#nukc/LoadMoreWrapper)
 
 make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
 
@@ -16,9 +17,22 @@ make recyclerView supports load more and customize the footer view, without chan
 
 ## Installation
 
-add the dependency to your build.gradle:
+Step 1. Add the JitPack repository to your build file
+Add it in your root build.gradle at the end of repositories:
 ```gradle
-    compile 'com.github.nukc:LoadMoreWrapper:1.1'
+    allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+Step 2. Add the dependency
+```gradle
+    dependencies {
+	        compile 'com.github.nukc:LoadMoreWrapper:v1.1'
+	}
 ```
 
 ## Usage
