@@ -111,6 +111,7 @@ public class SampleFragment extends Fragment {
         LoadMoreWrapper.with(mSampleAdapter)
                 .setFooterView(managerMode == MODE_GRIDLAYOUT ? R.layout.view_footer : -1)
 //                .setLoadMoreEnabled(false)
+                .setShowNoMoreEnabled(true)
                 .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
                     @Override
                     public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
@@ -131,7 +132,6 @@ public class SampleFragment extends Fragment {
 
         return view;
     }
-
 
     private static class SampleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

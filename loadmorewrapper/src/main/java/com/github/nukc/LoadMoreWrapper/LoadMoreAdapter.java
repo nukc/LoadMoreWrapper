@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,14 +14,16 @@ import android.view.ViewGroup;
  * 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
  * Created by C on 16/6/27.
  */
-public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = LoadMoreAdapter.class.getSimpleName();
     private static final byte TYPE_FOOTER = -2;
+    private static final byte TYPE_NO_MORE = -3;
 
     private RecyclerView.Adapter mAdapter;
     private View mFooterView;
     private int mFooterResId = View.NO_ID;
+    private View mNoMoreView;
 
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
@@ -30,6 +31,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Enabled mEnabled;
     private boolean mIsLoading;
     private boolean mShouldRemove;
+    private boolean mShowNoMoreEnabled;
 
     public LoadMoreAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
@@ -63,13 +65,16 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {
             if (mFooterResId != View.NO_ID) {
-                mFooterView = LayoutInflater.from(parent.getContext()).inflate(mFooterResId, parent, false);
+                mFooterView = LoadMoreHelper.inflate(parent, mFooterResId);
             }
             if (mFooterView != null) {
                 return new FooterHolder(mFooterView);
             }
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.base_footer, parent, false);
+            View view = LoadMoreHelper.inflate(parent, R.layout.base_footer);
             return new FooterHolder(view);
+        } else if (viewType == TYPE_NO_MORE) {
+            View view = LoadMoreHelper.inflate(parent, R.layout.base_no_more);
+            return new NoMoreHolder(view);
         }
 
         return mAdapter.onCreateViewHolder(parent, viewType);
@@ -85,6 +90,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 mIsLoading = true;
                 mOnLoadMoreListener.onLoadMore(mEnabled);
             }
+        } else if (holder instanceof NoMoreHolder) {
+            //ignore
         } else {
             mAdapter.onBindViewHolder(holder, position);
         }
@@ -93,13 +100,16 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         int count = mAdapter.getItemCount();
-        return getLoadMoreEnabled()? count + 1 : count + (mShouldRemove ? 1 : 0);
+        return getLoadMoreEnabled() ? count + 1 : mShowNoMoreEnabled ?
+                count + 1 : count + (mShouldRemove ? 1 : 0);
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == mAdapter.getItemCount() && (getLoadMoreEnabled() || mShouldRemove)) {
             return TYPE_FOOTER;
+        } else if (position == mAdapter.getItemCount() && mShowNoMoreEnabled && !getLoadMoreEnabled()) {
+            return TYPE_NO_MORE;
         }
         return mAdapter.getItemViewType(position);
     }
@@ -123,12 +133,15 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public FooterHolder(View itemView) {
             super(itemView);
+            LoadMoreHelper.setItemViewFullSpan(itemView);
+        }
+    }
 
-            //当为StaggeredGridLayoutManager的时候,设置footerView占据整整一行
-            ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
-            if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
-                ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
-            }
+    static class NoMoreHolder extends RecyclerView.ViewHolder {
+
+        public NoMoreHolder(View itemView) {
+            super(itemView);
+            LoadMoreHelper.setItemViewFullSpan(itemView);
         }
     }
 
@@ -147,7 +160,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if (getItemViewType(position) == TYPE_FOOTER) {
+                    int itemViewType = getItemViewType(position);
+                    if (itemViewType == TYPE_FOOTER || itemViewType == TYPE_NO_MORE) {
                         return gridLayoutManager.getSpanCount();
                     } else if (originalSizeLookup != null) {
                         return originalSizeLookup.getSpanSize(position);
@@ -184,7 +198,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     sgLayoutManager.findLastVisibleItemPositions(into);
 
                     isBottom = last(into) >= layoutManager.getItemCount() - 1;
-                }else {
+                } else {
                     isBottom = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition()
                             >= layoutManager.getItemCount() - 1;
                 }
@@ -229,7 +243,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mOnLoadMoreListener = listener;
     }
 
-    public interface OnLoadMoreListener{
+    public interface OnLoadMoreListener {
         void onLoadMore(Enabled enabled);
     }
 
@@ -256,8 +270,12 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mShouldRemove = shouldRemove;
     }
 
+    public void setShowNoMoreEnabled(boolean showNoMoreEnabled) {
+        mShowNoMoreEnabled = showNoMoreEnabled;
+    }
+
     /**
-     * 控制加载更多的开关, 作为 {@link OnLoadMoreListener onLoadMore(Enabled enabled) 的参数}
+     * 控制加载更多的开关, 作为 {@link OnLoadMoreListener#onLoadMore(Enabled enabled) 的参数}
      */
     public static class Enabled {
         private boolean mLoadMoreEnabled = true;
@@ -269,6 +287,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         /**
          * 设置是否启用加载更多
+         *
          * @param enabled 是否启用
          */
         public void setLoadMoreEnabled(boolean enabled) {
@@ -282,6 +301,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         /**
          * 获取是否启用了加载更多,默认是true
+         *
          * @return boolean
          */
         public boolean getLoadMoreEnabled() {
@@ -344,7 +364,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     };
 
     /**
-     *  update last item
+     * update last item
      */
     private void notifyFooterHolderChanged() {
         if (getLoadMoreEnabled()) {
@@ -354,14 +374,15 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             /**
              * fix IndexOutOfBoundsException when setLoadMoreEnabled(false) and then use onItemRangeInserted
-             * @see android.support.v7.widget.RecyclerView.Recycler
-             * boolean validateViewHolderForOffsetPosition(ViewHolder holder)
+             * @see android.support.v7.widget.RecyclerView.Recycler#validateViewHolderForOffsetPosition(RecyclerView.ViewHolder)
              */
             int position = mAdapter.getItemCount();
             RecyclerView.ViewHolder viewHolder =
                     mRecyclerView.findViewHolderForAdapterPosition(position);
             if (viewHolder instanceof FooterHolder) {
                 LoadMoreAdapter.this.notifyItemRemoved(position);
+            } else {
+                LoadMoreAdapter.this.notifyItemChanged(position);
             }
         }
     }

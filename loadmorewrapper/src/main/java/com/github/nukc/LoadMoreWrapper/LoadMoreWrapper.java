@@ -43,8 +43,17 @@ public class LoadMoreWrapper {
         return this;
     }
 
+    public LoadMoreWrapper setShowNoMoreEnabled(boolean enabled) {
+        mLoadMoreAdapter.setShowNoMoreEnabled(enabled);
+        return this;
+    }
+
     public RecyclerView.Adapter getOriginalAdapter() {
         return mLoadMoreAdapter.getOriginalAdapter();
+    }
+
+    public boolean getLoadMoreEnabled() {
+        return mLoadMoreAdapter.getLoadMoreEnabled();
     }
 
     public LoadMoreAdapter into(RecyclerView recyclerView) {

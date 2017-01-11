@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         String[] titles = getResources().getStringArray(R.array.tab_main);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), titles);
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }
 
