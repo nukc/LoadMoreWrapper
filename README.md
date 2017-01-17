@@ -5,11 +5,12 @@
 
 make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
 
-在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
+在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
 
-- 支持当item未铺满屏幕的时候仍能够加载更多
+- 支持当 item 未铺满屏幕的时候仍能够加载更多
 - 支持自定义加载视图
-- 当layoutManager为Grid和StaggeredGrid的时候, 加载更多视图footerView仍占据一行
+- 当 layoutManager 为 Grid 和 StaggeredGrid 的时候, 加载更多视图 footerView 仍占据一行
+- 支持设置是否显示没有更多视图，可自定义
 
 <img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif">
 <img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif">
@@ -21,7 +22,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:LoadMoreWrapper:1.1'
+    compile 'com.github.nukc:LoadMoreWrapper:1.2'
 ```
 
 
@@ -41,16 +42,17 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-	    compile 'com.github.nukc:LoadMoreWrapper:v1.1'
+	    compile 'com.github.nukc:LoadMoreWrapper:v1.2'
 	}
 ```
 
 ## Usage
 
 ```java
-    //the adapter is the original (这个adapter是原有的, 不改动它)
+    //the adapter is the original (这个 adapter 是原有的, 不改动它)
     LoadMoreWrapper.with(adapter)
         .setFooterView(...) // view or layout resource
+        .setShowNoMoreEnabled(true) // enable show NoMoreView，default false
         .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
              @Override
              public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
@@ -59,6 +61,15 @@ Step 2. Add the dependency
              })
         .into(recyclerView);
 ```
+
+方法名 | 备注
+:------------- | :-------------
+setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true 
+setShowNoMoreEnabled(boolean enabled) | 设置全部加载完后是否显示没有更多视图，默认 false
+getOriginalAdapter() | 获取原来的 adapter
+
+注意：当加载完全部后且已 setLoadMoreEnabled(false)，但如果由于生命周期或其他问题而导致 View 重建，mLoadMoreEnabled 依然为 true。
+这时候应该需要保存 mLoadMoreEnabled 的状态，如果是 ViewPager + Fragment，可以使用 setOffscreenPageLimit 进行解决。
 
 ## License
 

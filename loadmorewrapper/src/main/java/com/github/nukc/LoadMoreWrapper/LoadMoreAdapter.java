@@ -24,6 +24,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private View mFooterView;
     private int mFooterResId = View.NO_ID;
     private View mNoMoreView;
+    private int mNoMoreResId = View.NO_ID;
 
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
@@ -73,6 +74,12 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View view = LoadMoreHelper.inflate(parent, R.layout.base_footer);
             return new FooterHolder(view);
         } else if (viewType == TYPE_NO_MORE) {
+            if (mNoMoreResId != View.NO_ID) {
+                mNoMoreView = LoadMoreHelper.inflate(parent, mNoMoreResId);
+            }
+            if (mNoMoreView != null) {
+                return new NoMoreHolder(mNoMoreView);
+            }
             View view = LoadMoreHelper.inflate(parent, R.layout.base_no_more);
             return new NoMoreHolder(view);
         }
@@ -127,6 +134,14 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setFooterView(@LayoutRes int resId) {
         mFooterResId = resId;
+    }
+
+    public void setNoMoreView(View noMoreView) {
+        mNoMoreView = noMoreView;
+    }
+
+    public void setNoMoreView(@LayoutRes int resId) {
+        mNoMoreResId = resId;
     }
 
     static class FooterHolder extends RecyclerView.ViewHolder {

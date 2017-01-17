@@ -13,7 +13,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name '在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。'    //项目描述
+                name '在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。'    //项目描述
                 url siteUrl
                 // Set your license
                 licenses {
@@ -40,7 +40,7 @@ install {
 }
 
 // This is the library version used when deploying the artifact
-version = "1.1"
+version = "1.2"
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs

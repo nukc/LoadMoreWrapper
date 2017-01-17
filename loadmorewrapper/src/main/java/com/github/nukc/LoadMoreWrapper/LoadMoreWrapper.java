@@ -30,11 +30,29 @@ public class LoadMoreWrapper {
         return this;
     }
 
+    public LoadMoreWrapper setNoMoreView(@LayoutRes int resId) {
+        mLoadMoreAdapter.setNoMoreView(resId);
+        return this;
+    }
+
+    public LoadMoreWrapper setNoMoreView(View noMoreView) {
+        mLoadMoreAdapter.setNoMoreView(noMoreView);
+        return this;
+    }
+
+    /**
+     * 监听加载更多触发事件
+     * @param listener {@link com.github.nukc.LoadMoreWrapper.LoadMoreAdapter.OnLoadMoreListener}
+     */
     public LoadMoreWrapper setListener(LoadMoreAdapter.OnLoadMoreListener listener) {
         mLoadMoreAdapter.setLoadMoreListener(listener);
         return this;
     }
 
+    /**
+     * 设置是否启用加载更多
+     * @param enabled default true
+     */
     public LoadMoreWrapper setLoadMoreEnabled(boolean enabled) {
         mLoadMoreAdapter.setLoadMoreEnabled(enabled);
         if (!enabled) {
@@ -43,17 +61,20 @@ public class LoadMoreWrapper {
         return this;
     }
 
+    /**
+     * 设置全部加载完后是否显示没有更多视图
+     * @param enabled default false
+     */
     public LoadMoreWrapper setShowNoMoreEnabled(boolean enabled) {
         mLoadMoreAdapter.setShowNoMoreEnabled(enabled);
         return this;
     }
 
+    /**
+     * 获取原来的 adapter
+     */
     public RecyclerView.Adapter getOriginalAdapter() {
         return mLoadMoreAdapter.getOriginalAdapter();
-    }
-
-    public boolean getLoadMoreEnabled() {
-        return mLoadMoreAdapter.getLoadMoreEnabled();
     }
 
     public LoadMoreAdapter into(RecyclerView recyclerView) {
