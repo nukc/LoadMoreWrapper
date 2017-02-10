@@ -1,6 +1,7 @@
 # LoadMoreWrapper
 
-[ ![Download](https://api.bintray.com/packages/nukc/maven/LoadMoreWrapper/images/download.svg) ](https://bintray.com/nukc/maven/LoadMoreWrapper/_latestVersion)
+[![Build Status](https://travis-ci.org/nukc/LoadMoreWrapper.svg?branch=master)](https://travis-ci.org/nukc/LoadMoreWrapper)
+[![Download](https://api.bintray.com/packages/nukc/maven/LoadMoreWrapper/images/download.svg) ](https://bintray.com/nukc/maven/LoadMoreWrapper/_latestVersion)
 [![](https://jitpack.io/v/nukc/LoadMoreWrapper.svg)](https://jitpack.io/#nukc/LoadMoreWrapper)
 
 make recyclerView supports load more and customize the footer view, without changes to the original adater of recyclerView.
