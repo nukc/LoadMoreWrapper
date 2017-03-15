@@ -13,9 +13,7 @@ make recyclerView supports load more and customize the footer view, without chan
 - 当 layoutManager 为 Grid 和 StaggeredGrid 的时候, 加载更多视图 footerView 仍占据一行
 - 支持设置是否显示没有更多视图，可自定义
 
-<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif">
-<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif">
-<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif">
+<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif">
 
 ## Installation
 
