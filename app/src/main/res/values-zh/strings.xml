@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_usage">常见姿势</string>
+    <string name="another_usage">另一种姿势</string>
+    <string name="issues">用于重现 Issues</string>
+</resources>

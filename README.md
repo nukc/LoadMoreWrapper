@@ -21,7 +21,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:loadmorewrapper:1.2'
+    compile 'com.github.nukc:loadmorewrapper:1.4'
 ```
 
 
@@ -41,7 +41,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-	    compile 'com.github.nukc:LoadMoreWrapper:v1.2'
+	    compile 'com.github.nukc:LoadMoreWrapper:v1.4'
 	}
 ```
 
@@ -59,6 +59,36 @@ Step 2. Add the dependency
                  //you can enabled.setLoadMoreEnabled(false) when do not need load more
              })
         .into(recyclerView);
+```
+
+or
+
+in the original adapter: [demo](https://github.com/nukc/LoadMoreWrapper/blob/master/app/src/main/java/com/github/nukc/sample/AnotherActivity.java)
+```java
+    private static class AnotherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private LoadMoreWrapper mWrapper;
+
+        // code..
+
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+            super.onAttachedToRecyclerView(recyclerView);
+
+            mWrapper = LoadMoreWrapper.with(this);
+            mWrapper.setListener(
+                    new LoadMoreAdapter.OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
+                            // do something
+                        }
+                    })
+                    .setShowNoMoreEnabled(true)
+                    .into(recyclerView);
+        }
+
+    }
+
 ```
 
 方法名 | 备注

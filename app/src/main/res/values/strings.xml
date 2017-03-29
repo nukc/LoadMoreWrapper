@@ -1,10 +1,14 @@
 <resources>
-    <string name="app_name">RecyclerAdapter</string>
+    <string name="app_name">LoadMoreWrapper</string>
 
     <string-array name="tab_main">
-        <item>Item not covered</item>
         <item>Default</item>
+        <item>Item not covered</item>
         <item>GridLayoutManager</item>
         <item>StaggeredGridLayoutManager</item>
     </string-array>
+
+    <string name="default_usage">default_usage</string>
+    <string name="another_usage">another_usage</string>
+    <string name="issues">Issues</string>
 </resources>
