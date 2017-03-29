@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 /**
  * 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
- * Created by C on 16/6/27.
+ * @author Nukc
  */
 public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -95,10 +95,16 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // 触发loadMore
             if (!canScroll() && mOnLoadMoreListener != null && !mIsLoading) {
                 mIsLoading = true;
-                mOnLoadMoreListener.onLoadMore(mEnabled);
+                // fix Cannot call this method while RecyclerView is computing a layout or scrolling
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mOnLoadMoreListener.onLoadMore(mEnabled);
+                    }
+                });
             }
         } else if (holder instanceof NoMoreHolder) {
-            //ignore
+            // ignore
         } else {
             mAdapter.onBindViewHolder(holder, position);
         }
@@ -165,11 +171,11 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mRecyclerView = recyclerView;
         recyclerView.addOnScrollListener(mOnScrollListener);
 
-        //当为GridLayoutManager的时候, 设置footerView占据整整一行.
+        // 当为GridLayoutManager的时候, 设置footerView占据整整一行.
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             final GridLayoutManager gridLayoutManager = ((GridLayoutManager) layoutManager);
-            //获取原来的SpanSizeLookup,当不为null的时候,除了footerView都应该返回原来的spanSize
+            // 获取原来的SpanSizeLookup,当不为null的时候,除了footerView都应该返回原来的spanSize
             final GridLayoutManager.SpanSizeLookup originalSizeLookup = gridLayoutManager.getSpanSizeLookup();
 
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -364,7 +370,20 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mShouldRemove && positionStart == mAdapter.getItemCount()) {
                 mShouldRemove = false;
             }
+            /*
+               use notifyItemRangeRemoved after clear item, can throw IndexOutOfBoundsException
+               @link RecyclerView#tryGetViewHolderForPositionByDeadline
+               fix java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid item position
+             */
+            boolean shouldSync = false;
+            if (mEnabled.getLoadMoreEnabled() && mAdapter.getItemCount() == 0) {
+                setLoadMoreEnabled(false);
+                shouldSync = true;
+            }
             LoadMoreAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
+            if (shouldSync) {
+                setLoadMoreEnabled(true);
+            }
             mIsLoading = false;
         }
 
@@ -387,9 +406,9 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (mShouldRemove) {
             mShouldRemove = false;
 
-            /**
-             * fix IndexOutOfBoundsException when setLoadMoreEnabled(false) and then use onItemRangeInserted
-             * @see android.support.v7.widget.RecyclerView.Recycler#validateViewHolderForOffsetPosition(RecyclerView.ViewHolder)
+            /*
+              fix IndexOutOfBoundsException when setLoadMoreEnabled(false) and then use onItemRangeInserted
+              @see android.support.v7.widget.RecyclerView.Recycler#validateViewHolderForOffsetPosition(RecyclerView.ViewHolder)
              */
             int position = mAdapter.getItemCount();
             RecyclerView.ViewHolder viewHolder =

@@ -40,7 +40,7 @@ install {
 }
 
 // This is the library version used when deploying the artifact
-version = "1.2"
+version = "1.3"
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -65,9 +65,10 @@ artifacts {
 
 Properties properties = new Properties()
 boolean isHasFile = false
-if (project.rootProject.findProject('local.properties') != null){
+File file = new File(project.rootDir.path + File.separator + "local.properties");
+if (file.exists()){
     isHasFile = true
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    properties.load(file.newDataInputStream())
 }
 bintray {
     user = isHasFile ? properties.getProperty("bintray.user") : System.getenv("bintray.user")

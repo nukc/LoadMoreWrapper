@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by C on 16/7/4.
+ * @author Nukc
  */
 public class LoadMoreWrapper {
 
@@ -56,7 +56,7 @@ public class LoadMoreWrapper {
     public LoadMoreWrapper setLoadMoreEnabled(boolean enabled) {
         mLoadMoreAdapter.setLoadMoreEnabled(enabled);
         if (!enabled) {
-            mLoadMoreAdapter.setShouldRemove(enabled);
+            mLoadMoreAdapter.setShouldRemove(true);
         }
         return this;
     }
