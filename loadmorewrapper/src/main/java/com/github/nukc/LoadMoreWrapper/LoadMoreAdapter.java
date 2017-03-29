@@ -379,6 +379,12 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mEnabled.getLoadMoreEnabled() && mAdapter.getItemCount() == 0) {
                 setLoadMoreEnabled(false);
                 shouldSync = true;
+                // when use onItemRangeInserted(0, count) after clear item
+                // recyclerView will auto scroll to bottom, because has one item(loadMoreView)
+                // remove loadMoreView
+                if (getItemCount() == 1) {
+                    LoadMoreAdapter.this.notifyItemRemoved(0);
+                }
             }
             LoadMoreAdapter.this.notifyItemRangeRemoved(positionStart, itemCount);
             if (shouldSync) {
