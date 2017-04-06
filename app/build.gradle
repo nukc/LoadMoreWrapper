@@ -20,7 +20,7 @@ android {
 }
 
 ext {
-    supportLibVersion = '25.1.1'
+    supportLibVersion = '25.3.0'
 }
 
 dependencies {
@@ -30,7 +30,5 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.android.support:support-v4:${supportLibVersion}"
     compile project(':loadmorewrapper');
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     testCompile 'junit:junit:4.12'
 }
