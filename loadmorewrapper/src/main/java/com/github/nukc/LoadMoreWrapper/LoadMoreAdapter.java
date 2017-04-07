@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 在不改动RecyclerView原有adapter的情况下，使其拥有加载更多功能和自定义底部视图。
+ * 在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
  * @author Nukc
  */
 public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -91,8 +91,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FooterHolder) {
-            // 当recyclerView不能滚动的时候(item不能铺满屏幕的时候也是不能滚动的)
-            // 触发loadMore
+            // 当 recyclerView 不能滚动的时候(item 不能铺满屏幕的时候也是不能滚动的)
+            // call loadMore
             if (!canScroll() && mOnLoadMoreListener != null && !mIsLoading) {
                 mIsLoading = true;
                 // fix Cannot call this method while RecyclerView is computing a layout or scrolling
@@ -171,11 +171,11 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mRecyclerView = recyclerView;
         recyclerView.addOnScrollListener(mOnScrollListener);
 
-        // 当为GridLayoutManager的时候, 设置footerView占据整整一行.
+        // 当为 GridLayoutManager 的时候, 设置 footerView 占据整整一行.
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager) {
             final GridLayoutManager gridLayoutManager = ((GridLayoutManager) layoutManager);
-            // 获取原来的SpanSizeLookup,当不为null的时候,除了footerView都应该返回原来的spanSize
+            // 获取原来的 SpanSizeLookup,当不为 null 的时候,除了 footerView 都应该返回原来的 spanSize
             final GridLayoutManager.SpanSizeLookup originalSizeLookup = gridLayoutManager.getSpanSizeLookup();
 
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -273,7 +273,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public boolean getLoadMoreEnabled() {
-        return mEnabled.getLoadMoreEnabled() && mAdapter.getItemCount() > 0;
+        return mEnabled.getLoadMoreEnabled() && mAdapter.getItemCount() >= 0;
     }
 
     private interface OnEnabledListener {
@@ -321,7 +321,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         /**
-         * 获取是否启用了加载更多,默认是true
+         * 获取是否启用了加载更多,默认是 true
          *
          * @return boolean
          */
@@ -360,6 +360,11 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
+            // when no data is initialized (has loadMoreView)
+            // should remove loadMoreView before notifyItemRangeInserted
+            if (mRecyclerView.getChildCount() == 1) {
+                LoadMoreAdapter.this.notifyItemRemoved(0);
+            }
             LoadMoreAdapter.this.notifyItemRangeInserted(positionStart, itemCount);
             notifyFooterHolderChanged();
             mIsLoading = false;

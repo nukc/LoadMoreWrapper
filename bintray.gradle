@@ -1,10 +1,11 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-def siteUrl = 'https://github.com/nukc/LoadMoreWrapper'      // 项目的主页
-def gitUrl = 'https://github.com/nukc/LoadMoreWrapper.git'   // Git仓库的url
+def siteUrl = 'https://github.com/nukc/LoadMoreWrapper'
+def gitUrl = 'https://github.com/nukc/LoadMoreWrapper.git'
 
-group = "com.github.nukc"                                   // Maven Group ID for the artifact，一般填你唯一的包名
+group = "com.github.nukc"
+version = "1.5"
 
 install {
     repositories.mavenInstaller {
@@ -13,7 +14,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name '在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。'    //项目描述
+                name '在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。'
                 url siteUrl
                 // Set your license
                 licenses {
@@ -38,9 +39,6 @@ install {
         }
     }
 }
-
-// This is the library version used when deploying the artifact
-version = "1.4"
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -76,7 +74,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "LoadMoreWrapper"    //发布到JCenter上的项目名字
+        name = "LoadMoreWrapper"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

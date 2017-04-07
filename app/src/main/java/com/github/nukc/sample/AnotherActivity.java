@@ -2,7 +2,6 @@ package com.github.nukc.sample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,8 +22,8 @@ public class AnotherActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(new AnotherAdapter(5));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(new AnotherAdapter(0));
     }
 
     private static class AnotherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -53,7 +52,7 @@ public class AnotherActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
             super.onAttachedToRecyclerView(recyclerView);
 
             mWrapper = LoadMoreWrapper.with(this);
@@ -61,7 +60,12 @@ public class AnotherActivity extends AppCompatActivity {
                     new LoadMoreAdapter.OnLoadMoreListener() {
                         @Override
                         public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
-                            addItem();
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addItem();
+                                }
+                            }, 500);
                         }
                     })
                     .setShowNoMoreEnabled(true)
@@ -74,8 +78,8 @@ public class AnotherActivity extends AppCompatActivity {
             }
 
             final int positionStart = mCount;
-            mCount += 10;
-            notifyItemRangeInserted(positionStart, 10);
+            mCount += 5;
+            notifyItemRangeInserted(positionStart, 5);
         }
 
         static class AnotherHolder extends RecyclerView.ViewHolder {
