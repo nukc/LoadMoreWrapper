@@ -10,6 +10,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * 在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
  * @author Nukc
@@ -87,9 +89,12 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mAdapter.onCreateViewHolder(parent, viewType);
     }
 
+    @Override
+    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
         if (holder instanceof FooterHolder) {
             // 当 recyclerView 不能滚动的时候(item 不能铺满屏幕的时候也是不能滚动的)
             // call loadMore
@@ -106,7 +111,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NoMoreHolder) {
             // ignore
         } else {
-            mAdapter.onBindViewHolder(holder, position);
+            mAdapter.onBindViewHolder(holder, position, payloads);
         }
     }
 
