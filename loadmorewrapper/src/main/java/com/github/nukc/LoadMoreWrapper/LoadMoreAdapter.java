@@ -147,12 +147,20 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mFooterResId = resId;
     }
 
+    public View getFooterView() {
+        return mFooterView;
+    }
+
     public void setNoMoreView(View noMoreView) {
         mNoMoreView = noMoreView;
     }
 
     public void setNoMoreView(@LayoutRes int resId) {
         mNoMoreResId = resId;
+    }
+
+    public View getNoMoreView() {
+        return mNoMoreView;
     }
 
     static class FooterHolder extends RecyclerView.ViewHolder {

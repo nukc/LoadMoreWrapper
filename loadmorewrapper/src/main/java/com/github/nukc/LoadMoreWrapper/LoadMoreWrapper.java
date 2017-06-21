@@ -30,6 +30,10 @@ public class LoadMoreWrapper {
         return this;
     }
 
+    public View getFooterView() {
+        return mLoadMoreAdapter.getFooterView();
+    }
+
     public LoadMoreWrapper setNoMoreView(@LayoutRes int resId) {
         mLoadMoreAdapter.setNoMoreView(resId);
         return this;
@@ -38,6 +42,10 @@ public class LoadMoreWrapper {
     public LoadMoreWrapper setNoMoreView(View noMoreView) {
         mLoadMoreAdapter.setNoMoreView(noMoreView);
         return this;
+    }
+
+    public View getNoMoreView() {
+        return mLoadMoreAdapter.getNoMoreView();
     }
 
     /**
