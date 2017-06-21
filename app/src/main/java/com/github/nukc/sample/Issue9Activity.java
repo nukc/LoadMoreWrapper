@@ -54,7 +54,7 @@ public class Issue9Activity extends AppCompatActivity {
                 .into(recyclerView);
     }
 
-    private static class Issue9Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static class Issue9Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private int mCount;
 

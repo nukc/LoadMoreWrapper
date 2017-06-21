@@ -18,6 +18,9 @@
         <activity android:name=".SampleActivity" />
         <activity android:name=".Issue9Activity" />
         <activity android:name=".AnotherActivity" />
+        <activity
+            android:name=".CoordinatorActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

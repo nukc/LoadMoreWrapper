@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_default).setOnClickListener(mOnClickListener);
         findViewById(R.id.btn_another).setOnClickListener(mOnClickListener);
         findViewById(R.id.btn_issues).setOnClickListener(mOnClickListener);
+        findViewById(R.id.btn_coordinator).setOnClickListener(mOnClickListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_issues:
                     cls = Issue9Activity.class;
                     break;
+                case R.id.btn_coordinator:
+                    cls = CoordinatorActivity.class;
+                    break;
+                default:
+                    throw new IllegalArgumentException("~");
             }
             startActivity(new Intent(MainActivity.this, cls));
         }
