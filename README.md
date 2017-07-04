@@ -21,7 +21,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:loadmorewrapper:1.6'
+    compile 'com.github.nukc:loadmorewrapper:1.6.2'
 ```
 
 
@@ -41,7 +41,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-	    compile 'com.github.nukc:LoadMoreWrapper:v1.6'
+	    compile 'com.github.nukc:LoadMoreWrapper:v1.6.2'
 	}
 ```
 
@@ -93,9 +93,11 @@ in the original adapter: [demo](https://github.com/nukc/LoadMoreWrapper/blob/mas
 
 方法名 | 备注
 :------------- | :-------------
-setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true 
+setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true
 setShowNoMoreEnabled(boolean enabled) | 设置全部加载完后是否显示没有更多视图，默认 false
 getOriginalAdapter() | 获取原来的 adapter
+getFooterView | 获取加载更多视图
+getNoMoreView | 获取没有更多视图
 
 注意：当加载完全部后且已 setLoadMoreEnabled(false)，但如果由于生命周期或其他问题而导致 View 重建，mLoadMoreEnabled 依然为 true。
 这时候应该需要保存 mLoadMoreEnabled 的状态，如果是 ViewPager + Fragment，可以使用 setOffscreenPageLimit 进行解决。
