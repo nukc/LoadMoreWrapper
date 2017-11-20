@@ -163,7 +163,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mNoMoreView;
     }
 
-    static class FooterHolder extends RecyclerView.ViewHolder {
+    public static class FooterHolder extends RecyclerView.ViewHolder {
 
         public FooterHolder(View itemView) {
             super(itemView);
@@ -171,7 +171,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class NoMoreHolder extends RecyclerView.ViewHolder {
+    public static class NoMoreHolder extends RecyclerView.ViewHolder {
 
         public NoMoreHolder(View itemView) {
             super(itemView);
