@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
 
     defaultConfig {
         applicationId "com.github.nukc.loadmorewrapper.sample"
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +20,7 @@ android {
 }
 
 ext {
-    supportLibVersion = '25.3.0'
+    supportLibVersion = '27.0.1'
 }
 
 dependencies {
