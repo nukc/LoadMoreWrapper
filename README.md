@@ -12,6 +12,7 @@ make recyclerView supports load more and customize the footer view, without chan
 - 支持自定义加载视图
 - 当 layoutManager 为 Grid 和 StaggeredGrid 的时候, 加载更多视图 footerView 仍占据一行
 - 支持设置是否显示没有更多视图，可自定义
+- 支持设置加载失败视图，点击会自动触发加载更多事件
 
 <img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif">
 
@@ -21,7 +22,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:loadmorewrapper:1.6.2'
+    compile 'com.github.nukc:loadmorewrapper:1.7.0'
 ```
 
 
@@ -31,18 +32,18 @@ Step 1. Add the JitPack repository to your build file
 Add it in your root build.gradle at the end of repositories:
 ```gradle
     allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
 	}
 ```
 
 Step 2. Add the dependency
 ```gradle
     dependencies {
-	    compile 'com.github.nukc:LoadMoreWrapper:v1.6.2'
-	}
+        compile 'com.github.nukc:LoadMoreWrapper:v1.7.0'
+    }
 ```
 
 ## Usage
@@ -57,6 +58,7 @@ Step 2. Add the dependency
              public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
                  // do something
                  // you can enabled.setLoadMoreEnabled(false) when do not need load more
+                 // you can enabled.setLoadFailed(true) when load failed
              })
         .into(recyclerView);
 ```
@@ -95,9 +97,11 @@ in the original adapter: [demo](https://github.com/nukc/LoadMoreWrapper/blob/mas
 :------------- | :-------------
 setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true
 setShowNoMoreEnabled(boolean enabled) | 设置全部加载完后是否显示没有更多视图，默认 false
+setLoadFailed(boolean isLoadFailed) | 设置是否加载失败，默认 false
 getOriginalAdapter() | 获取原来的 adapter
 getFooterView | 获取加载更多视图
 getNoMoreView | 获取没有更多视图
+getLoadFailedView | 获取加载失败视图
 
 注意：当加载完全部后且已 setLoadMoreEnabled(false)，但如果由于生命周期或其他问题而导致 View 重建，mLoadMoreEnabled 依然为 true。
 这时候应该需要保存 mLoadMoreEnabled 的状态，如果是 ViewPager + Fragment，可以使用 setOffscreenPageLimit 进行解决。
