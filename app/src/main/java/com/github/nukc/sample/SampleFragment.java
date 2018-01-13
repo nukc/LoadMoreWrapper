@@ -39,6 +39,8 @@ public class SampleFragment extends Fragment {
     public @interface ManagerMode{}
 
     private SampleAdapter mSampleAdapter;
+    // use for demo, please ignore
+    private boolean mShowLoadFailedEnabled = true;
 
     public static SampleFragment newInstance(int count, @ManagerMode int managerMode) {
         Bundle args = new Bundle();
@@ -63,7 +65,7 @@ public class SampleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sample, container, false);
 
@@ -107,25 +109,35 @@ public class SampleFragment extends Fragment {
 //                }, 1200);
 //            }
 //        });
-
         LoadMoreWrapper.with(mSampleAdapter)
                 .setFooterView(managerMode == MODE_GRIDLAYOUT ? R.layout.view_footer : -1)
 //                .setLoadMoreEnabled(false)
                 .setShowNoMoreEnabled(true)
                 .setListener(new LoadMoreAdapter.OnLoadMoreListener() {
                     @Override
-                    public void onLoadMore(LoadMoreAdapter.Enabled enabled) {
-                        //not enable load more
-                        if (mSampleAdapter.getItemCount() >= 40) {
-                            enabled.setLoadMoreEnabled(false);
-                        }
-
-                        recyclerView.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mSampleAdapter.addItem();
+                    public void onLoadMore(final LoadMoreAdapter.Enabled enabled) {
+                        int itemCount = mSampleAdapter.getItemCount();
+                        if (itemCount > 20 && mShowLoadFailedEnabled) {
+                            mShowLoadFailedEnabled = false;
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    enabled.setLoadFailed(true);
+                                }
+                            }, 800);
+                        } else {
+                            //not enable load more
+                            if (itemCount >= 40) {
+                                enabled.setLoadMoreEnabled(false);
                             }
-                        }, 1200);
+
+                            recyclerView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mSampleAdapter.addItem();
+                                }
+                            }, 1200);
+                        }
                     }
                 })
                 .into(recyclerView);

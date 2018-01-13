@@ -48,6 +48,20 @@ public class LoadMoreWrapper {
         return mLoadMoreAdapter.getNoMoreView();
     }
 
+    public LoadMoreWrapper setLoadFailedView(@LayoutRes int resId) {
+        mLoadMoreAdapter.setLoadFailedView(resId);
+        return this;
+    }
+
+    public LoadMoreWrapper setLoadFailedView(View view) {
+        mLoadMoreAdapter.setLoadFailedView(view);
+        return this;
+    }
+
+    public View getLoadFailedView() {
+        return mLoadMoreAdapter.getLoadFailedView();
+    }
+
     /**
      * 监听加载更多触发事件
      * @param listener {@link com.github.nukc.LoadMoreWrapper.LoadMoreAdapter.OnLoadMoreListener}
@@ -76,6 +90,13 @@ public class LoadMoreWrapper {
     public LoadMoreWrapper setShowNoMoreEnabled(boolean enabled) {
         mLoadMoreAdapter.setShowNoMoreEnabled(enabled);
         return this;
+    }
+
+    /**
+     * 设置加载失败
+     */
+    public void setLoadFailed(boolean isLoadFailed) {
+        mLoadMoreAdapter.setLoadFailed(isLoadFailed);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_more">已经到底了</string>
+    <string name="retry">点击重试</string>
 </resources>

@@ -30,6 +30,8 @@ public class AnotherActivity extends AppCompatActivity {
 
         private LoadMoreWrapper mWrapper;
         private int mCount;
+        // use for demo, please ignore
+        private boolean mShowLoadFailedEnabled = true;
 
         public AnotherAdapter(int count) {
             mCount = count;
@@ -63,7 +65,7 @@ public class AnotherActivity extends AppCompatActivity {
                             recyclerView.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    addItem();
+                                    addItem(recyclerView);
                                 }
                             }, 500);
                         }
@@ -72,14 +74,24 @@ public class AnotherActivity extends AppCompatActivity {
                     .into(recyclerView);
         }
 
-        public void addItem() {
-            if (mCount > 30) {
-                mWrapper.setLoadMoreEnabled(false);
-            }
+        public void addItem(RecyclerView recyclerView) {
+            if (mCount > 0 && mShowLoadFailedEnabled) {
+                mShowLoadFailedEnabled = false;
+                recyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWrapper.setLoadFailed(true);
+                    }
+                }, 800);
+            } else {
+                if (mCount > 30) {
+                    mWrapper.setLoadMoreEnabled(false);
+                }
 
-            final int positionStart = mCount;
-            mCount += 5;
-            notifyItemRangeInserted(positionStart, 5);
+                final int positionStart = mCount;
+                mCount += 5;
+                notifyItemRangeInserted(positionStart, 5);
+            }
         }
 
         static class AnotherHolder extends RecyclerView.ViewHolder {

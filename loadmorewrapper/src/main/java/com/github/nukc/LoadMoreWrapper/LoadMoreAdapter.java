@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
+ *
  * @author Nukc
  */
 public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -21,12 +22,15 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final String TAG = LoadMoreAdapter.class.getSimpleName();
     private static final byte TYPE_FOOTER = -2;
     private static final byte TYPE_NO_MORE = -3;
+    private static final byte TYPE_LOAD_FAILED = -4;
 
     private RecyclerView.Adapter mAdapter;
     private View mFooterView;
     private int mFooterResId = View.NO_ID;
     private View mNoMoreView;
     private int mNoMoreResId = View.NO_ID;
+    private View mLoadFailedView;
+    private int mLoadFailedResId = View.NO_ID;
 
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
@@ -35,6 +39,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsLoading;
     private boolean mShouldRemove;
     private boolean mShowNoMoreEnabled;
+    private boolean mIsLoadFailed;
 
     public LoadMoreAdapter(@NonNull RecyclerView.Adapter adapter) {
         registerAdapter(adapter);
@@ -84,13 +89,23 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             View view = LoadMoreHelper.inflate(parent, R.layout.base_no_more);
             return new NoMoreHolder(view);
+        } else if (viewType == TYPE_LOAD_FAILED) {
+            if (mLoadFailedResId != View.NO_ID) {
+                mLoadFailedView = LoadMoreHelper.inflate(parent, mLoadFailedResId);
+            }
+            View view = mLoadFailedView;
+            if (view == null) {
+                view = LoadMoreHelper.inflate(parent, R.layout.base_load_failed);
+            }
+            return new LoadFailedHolder(view, mEnabled, mOnLoadMoreListener);
         }
 
         return mAdapter.onCreateViewHolder(parent, viewType);
     }
 
     @Override
-    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -108,7 +123,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 });
             }
-        } else if (holder instanceof NoMoreHolder) {
+        } else if (holder instanceof NoMoreHolder || holder instanceof LoadFailedHolder) {
             // ignore
         } else {
             mAdapter.onBindViewHolder(holder, position, payloads);
@@ -124,6 +139,9 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
+        if (position == mAdapter.getItemCount() && mIsLoadFailed) {
+            return TYPE_LOAD_FAILED;
+        }
         if (position == mAdapter.getItemCount() && (getLoadMoreEnabled() || mShouldRemove)) {
             return TYPE_FOOTER;
         } else if (position == mAdapter.getItemCount() && mShowNoMoreEnabled && !getLoadMoreEnabled()) {
@@ -163,6 +181,18 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mNoMoreView;
     }
 
+    public void setLoadFailedView(View loadFailedView) {
+        mLoadFailedView = loadFailedView;
+    }
+
+    public void setLoadFailedView(@LayoutRes int resId) {
+        mLoadFailedResId = resId;
+    }
+
+    public View getLoadFailedView() {
+        return mLoadFailedView;
+    }
+
     static class FooterHolder extends RecyclerView.ViewHolder {
 
         public FooterHolder(View itemView) {
@@ -176,6 +206,23 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public NoMoreHolder(View itemView) {
             super(itemView);
             LoadMoreHelper.setItemViewFullSpan(itemView);
+        }
+    }
+
+    static class LoadFailedHolder extends RecyclerView.ViewHolder {
+
+        public LoadFailedHolder(View itemView, final Enabled enabled, final OnLoadMoreListener listener) {
+            super(itemView);
+            LoadMoreHelper.setItemViewFullSpan(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enabled.setLoadFailed(false);
+                    if (listener != null) {
+                        listener.onLoadMore(enabled);
+                    }
+                }
+            });
         }
     }
 
@@ -195,7 +242,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public int getSpanSize(int position) {
                     int itemViewType = getItemViewType(position);
-                    if (itemViewType == TYPE_FOOTER || itemViewType == TYPE_NO_MORE) {
+                    if (itemViewType == TYPE_FOOTER || itemViewType == TYPE_NO_MORE ||
+                            itemViewType == TYPE_LOAD_FAILED) {
                         return gridLayoutManager.getSpanCount();
                     } else if (originalSizeLookup != null) {
                         return originalSizeLookup.getSpanSize(position);
@@ -291,12 +339,20 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private interface OnEnabledListener {
         void notifyChanged();
+
+        void notifyLoadFailed(boolean isLoadFailed);
     }
 
     private OnEnabledListener mOnEnabledListener = new OnEnabledListener() {
         @Override
         public void notifyChanged() {
             mShouldRemove = true;
+        }
+
+        @Override
+        public void notifyLoadFailed(boolean isLoadFailed) {
+            mIsLoadFailed = isLoadFailed;
+            notifyFooterHolderChanged();
         }
     };
 
@@ -308,11 +364,16 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mShowNoMoreEnabled = showNoMoreEnabled;
     }
 
+    public void setLoadFailed(boolean isLoadFailed) {
+        mEnabled.setLoadFailed(isLoadFailed);
+    }
+
     /**
      * 控制加载更多的开关, 作为 {@link OnLoadMoreListener#onLoadMore(Enabled enabled) 的参数}
      */
     public static class Enabled {
         private boolean mLoadMoreEnabled = true;
+        private boolean mIsLoadFailed = false;
         private OnEnabledListener mListener;
 
         public Enabled(OnEnabledListener listener) {
@@ -330,6 +391,19 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             if (canNotify && !mLoadMoreEnabled) {
                 mListener.notifyChanged();
+            }
+        }
+
+        /**
+         * 设置是否加载失败
+         *
+         * @param isLoadFailed 是否加载失败
+         */
+        public void setLoadFailed(boolean isLoadFailed) {
+            if (mIsLoadFailed != isLoadFailed) {
+                mIsLoadFailed = isLoadFailed;
+                mListener.notifyLoadFailed(isLoadFailed);
+                setLoadMoreEnabled(!mIsLoadFailed);
             }
         }
 
