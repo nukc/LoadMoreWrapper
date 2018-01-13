@@ -14,7 +14,6 @@ import java.util.List;
 
 /**
  * 在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
- *
  * @author Nukc
  */
 public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -104,8 +103,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-    }
+    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
 
     @SuppressWarnings("unchecked")
     @Override
@@ -193,7 +191,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mLoadFailedView;
     }
 
-    static class FooterHolder extends RecyclerView.ViewHolder {
+    public static class FooterHolder extends RecyclerView.ViewHolder {
 
         public FooterHolder(View itemView) {
             super(itemView);
@@ -201,7 +199,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class NoMoreHolder extends RecyclerView.ViewHolder {
+    public static class NoMoreHolder extends RecyclerView.ViewHolder {
 
         public NoMoreHolder(View itemView) {
             super(itemView);
@@ -209,7 +207,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class LoadFailedHolder extends RecyclerView.ViewHolder {
+    public static class LoadFailedHolder extends RecyclerView.ViewHolder {
 
         public LoadFailedHolder(View itemView, final Enabled enabled, final OnLoadMoreListener listener) {
             super(itemView);
