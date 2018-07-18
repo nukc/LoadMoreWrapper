@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                     cls = AnotherActivity.class;
                     break;
                 case R.id.btn_issues:
-                    cls = Issue9Activity.class;
+                    cls = ScrollingActivity.class;
                     break;
             }
             startActivity(new Intent(MainActivity.this, cls));

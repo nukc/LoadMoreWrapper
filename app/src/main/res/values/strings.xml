@@ -11,4 +11,6 @@
     <string name="default_usage">default_usage</string>
     <string name="another_usage">another_usage</string>
     <string name="issues">Issues</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

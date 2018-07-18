@@ -145,7 +145,7 @@ public class SampleFragment extends Fragment {
         return view;
     }
 
-    private static class SampleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static class SampleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private int mCount;
 
