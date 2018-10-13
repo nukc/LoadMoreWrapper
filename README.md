@@ -42,7 +42,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-        compile 'com.github.nukc:LoadMoreWrapper:v1.7.0'
+        implementation 'com.github.nukc:LoadMoreWrapper:v1.7.0'
     }
 ```
 
@@ -108,7 +108,7 @@ getLoadFailedView | 获取加载失败视图
 
 ## License
 
-    Copyright 2016, 2017 nukc
+    Copyright 2016 nukc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
