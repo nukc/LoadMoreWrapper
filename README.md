@@ -22,7 +22,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    compile 'com.github.nukc:loadmorewrapper:1.7.0'
+    implementation 'com.github.nukc:loadmorewrapper:1.7.1'
 ```
 
 
@@ -42,7 +42,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-        implementation 'com.github.nukc:LoadMoreWrapper:v1.7.0'
+        implementation 'com.github.nukc:LoadMoreWrapper:v1.7.1'
     }
 ```
 
