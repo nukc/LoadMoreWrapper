@@ -64,6 +64,7 @@ public class LoadMoreWrapper {
 
     /**
      * 监听加载更多触发事件
+     *
      * @param listener {@link com.github.nukc.LoadMoreWrapper.LoadMoreAdapter.OnLoadMoreListener}
      */
     public LoadMoreWrapper setListener(LoadMoreAdapter.OnLoadMoreListener listener) {
@@ -73,6 +74,7 @@ public class LoadMoreWrapper {
 
     /**
      * 设置是否启用加载更多
+     *
      * @param enabled default true
      */
     public LoadMoreWrapper setLoadMoreEnabled(boolean enabled) {
@@ -85,10 +87,24 @@ public class LoadMoreWrapper {
 
     /**
      * 设置全部加载完后是否显示没有更多视图
+     *
      * @param enabled default false
      */
     public LoadMoreWrapper setShowNoMoreEnabled(boolean enabled) {
         mLoadMoreAdapter.setShowNoMoreEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * @param hasStableIds Whether items in data set have unique identifiers or not.
+     */
+    public LoadMoreWrapper setHasStableIds(boolean hasStableIds) {
+        mLoadMoreAdapter.setHasStableIds(hasStableIds);
+        return this;
+    }
+
+    public LoadMoreWrapper setOnStableIdCallback(OnStableIdCallback callback) {
+        mLoadMoreAdapter.setOnStableIdCallback(callback);
         return this;
     }
 
