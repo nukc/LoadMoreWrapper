@@ -33,7 +33,6 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private RecyclerView mRecyclerView;
     private OnLoadMoreListener mOnLoadMoreListener;
-    private OnStableIdCallback mOnStableIdCallback;
 
     private Enabled mEnabled;
     private boolean mIsLoading;
@@ -152,9 +151,9 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public long getItemId(int position) {
         final int itemViewType = getItemViewType(position);
-        if (mOnStableIdCallback != null && itemViewType != TYPE_FOOTER &&
+        if (mAdapter.hasStableIds() && itemViewType != TYPE_FOOTER &&
                 itemViewType != TYPE_LOAD_FAILED && itemViewType != TYPE_NO_MORE) {
-            return mOnStableIdCallback.getItemId(position);
+            return mAdapter.getItemId(position);
         }
         return super.getItemId(position);
     }
@@ -328,10 +327,6 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         recyclerView.removeOnScrollListener(mOnScrollListener);
         mAdapter.unregisterAdapterDataObserver(mObserver);
         mRecyclerView = null;
-    }
-
-    public void setOnStableIdCallback(OnStableIdCallback callback) {
-        mOnStableIdCallback = callback;
     }
 
     public void setLoadMoreListener(OnLoadMoreListener listener) {

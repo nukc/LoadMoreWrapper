@@ -22,7 +22,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    implementation 'com.github.nukc:loadmorewrapper:1.8.1'
+    implementation 'com.github.nukc:loadmorewrapper:1.8.3'
 ```
 
 
@@ -42,7 +42,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-        implementation 'com.github.nukc:LoadMoreWrapper:v1.8.1'
+        implementation 'com.github.nukc:LoadMoreWrapper:v1.8.3'
     }
 ```
 
@@ -98,8 +98,6 @@ in the original adapter: [demo](https://github.com/nukc/LoadMoreWrapper/blob/mas
 setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true
 setShowNoMoreEnabled(boolean enabled) | 设置全部加载完后是否显示没有更多视图，默认 false
 setLoadFailed(boolean isLoadFailed) | 设置是否加载失败，默认 false
-setHasStableIds(boolean hasStableIds) | Whether items in data set have unique identifiers or not
-setOnStableIdCallback(OnStableIdCallback callback) | Return the stable ID for the item at position
 getOriginalAdapter() | 获取原来的 adapter
 getFooterView | 获取加载更多视图
 getNoMoreView | 获取没有更多视图

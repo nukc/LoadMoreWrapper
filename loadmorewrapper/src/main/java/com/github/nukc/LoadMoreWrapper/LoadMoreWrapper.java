@@ -96,19 +96,6 @@ public class LoadMoreWrapper {
     }
 
     /**
-     * @param hasStableIds Whether items in data set have unique identifiers or not.
-     */
-    public LoadMoreWrapper setHasStableIds(boolean hasStableIds) {
-        mLoadMoreAdapter.setHasStableIds(hasStableIds);
-        return this;
-    }
-
-    public LoadMoreWrapper setOnStableIdCallback(OnStableIdCallback callback) {
-        mLoadMoreAdapter.setOnStableIdCallback(callback);
-        return this;
-    }
-
-    /**
      * 设置加载失败
      */
     public void setLoadFailed(boolean isLoadFailed) {
@@ -123,6 +110,7 @@ public class LoadMoreWrapper {
     }
 
     public LoadMoreAdapter into(RecyclerView recyclerView) {
+        mLoadMoreAdapter.setHasStableIds(mLoadMoreAdapter.getOriginalAdapter().hasStableIds());
         recyclerView.setAdapter(mLoadMoreAdapter);
         return mLoadMoreAdapter;
     }
