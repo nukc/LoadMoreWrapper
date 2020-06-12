@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 在不改动 RecyclerView 原有 adapter 的情况下，使其拥有加载更多功能和自定义底部视图。
+ *
  * @author Nukc
  */
 public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -103,7 +104,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+    public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -162,7 +164,12 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (mRecyclerView == null) {
             throw new NullPointerException("mRecyclerView is null, you should setAdapter(recyclerAdapter);");
         }
-        return ViewCompat.canScrollVertically(mRecyclerView, -1);
+        RecyclerView.LayoutManager lm = mRecyclerView.getLayoutManager();
+        if (lm instanceof LinearLayoutManager) {
+            return ((LinearLayoutManager) lm).findLastCompletelyVisibleItemPosition() < mAdapter.getItemCount() - 1;
+        }
+
+        return mRecyclerView.canScrollVertically(-1);
     }
 
     public void setFooterView(View footerView) {
