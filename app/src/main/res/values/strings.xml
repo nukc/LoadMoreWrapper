@@ -11,6 +11,7 @@
     <string name="default_usage">default_usage</string>
     <string name="another_usage">another_usage</string>
     <string name="issues">Issues</string>
+    <string name="not_show_footer_when_not_covered_screen">Not Show Footer When Not Covered Screen</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_settings">Settings</string>
 </resources>

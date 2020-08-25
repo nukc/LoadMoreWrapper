@@ -11,4 +11,5 @@
     <string name="default_usage">常见姿势</string>
     <string name="another_usage">另一种姿势</string>
     <string name="issues">用于重现 Issues</string>
+    <string name="not_show_footer_when_not_covered_screen">RecyclerView item 未铺满屏幕的时候不显示 footerView</string>
 </resources>

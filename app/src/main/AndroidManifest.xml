@@ -18,10 +18,11 @@
         <activity android:name=".SampleActivity" />
         <activity android:name=".Issue9Activity" />
         <activity android:name=".AnotherActivity" />
+        <activity android:name=".NotShowFooterWhenNotCoveredScreenActivity" />
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

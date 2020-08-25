@@ -31,4 +31,12 @@
         android:text="@string/issues"
         app:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/btn_not_show_footer_when_not_covered_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/not_show_footer_when_not_covered_screen"
+        app:textAllCaps="false" />
+
 </LinearLayout>
