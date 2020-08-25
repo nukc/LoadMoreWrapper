@@ -22,7 +22,7 @@ JCenter:
 
 add the dependency to your build.gradle:
 ```gradle
-    implementation 'com.github.nukc:loadmorewrapper:1.9'
+    implementation 'com.github.nukc:loadmorewrapper:1.9.1'
 ```
 
 
@@ -42,7 +42,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```gradle
     dependencies {
-        implementation 'com.github.nukc:LoadMoreWrapper:v1.8.3'
+        implementation 'com.github.nukc:LoadMoreWrapper:v1.9.1'
     }
 ```
 
@@ -98,6 +98,7 @@ in the original adapter: [demo](https://github.com/nukc/LoadMoreWrapper/blob/mas
 setLoadMoreEnabled(boolean enabled) | 设置是否启用加载更多，默认 true
 setShowNoMoreEnabled(boolean enabled) | 设置全部加载完后是否显示没有更多视图，默认 false
 setLoadFailed(boolean isLoadFailed) | 设置是否加载失败，默认 false
+setNotShowFooterWhenNotCoveredScreen(boolean notShow) | 设置在 item 未铺满屏幕的时候是否不显示底部视图，默认 false
 getOriginalAdapter() | 获取原来的 adapter
 getFooterView | 获取加载更多视图
 getNoMoreView | 获取没有更多视图
