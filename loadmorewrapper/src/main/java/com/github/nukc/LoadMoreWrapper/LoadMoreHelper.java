@@ -1,10 +1,11 @@
 package com.github.nukc.LoadMoreWrapper;
 
-import android.support.annotation.LayoutRes;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 /**
  * @author Nukc.

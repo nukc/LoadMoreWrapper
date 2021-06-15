@@ -2,8 +2,9 @@ package com.github.nukc.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 		findViewById(R.id.btn_another).setOnClickListener(mOnClickListener);
 		findViewById(R.id.btn_issues).setOnClickListener(mOnClickListener);
 		findViewById(R.id.btn_not_show_footer_when_not_covered_screen).setOnClickListener(mOnClickListener);
+		findViewById(R.id.btn_flex_box).setOnClickListener(mOnClickListener);
 	}
 
 	private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 					break;
 				case R.id.btn_not_show_footer_when_not_covered_screen:
 					cls = NotShowFooterWhenNotCoveredScreenActivity.class;
+					break;
+				case R.id.btn_flex_box:
+					cls = FlexboxActivity.class;
 					break;
 			}
 			startActivity(new Intent(MainActivity.this, cls));

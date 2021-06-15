@@ -39,4 +39,12 @@
         android:text="@string/not_show_footer_when_not_covered_screen"
         app:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/btn_flex_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/flex_box_layout_manager"
+        app:textAllCaps="false" />
+
 </LinearLayout>
