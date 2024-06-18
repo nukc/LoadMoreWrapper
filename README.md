@@ -14,7 +14,7 @@ make recyclerView supports load more and customize the footer view, without chan
 - 支持设置是否显示没有更多视图，可自定义
 - 支持设置加载失败视图，点击会自动触发加载更多事件
 
-<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif">
+<img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/item.gif" style="width: 270px"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/grid_custom.gif" style="width: 270px"><img src="https://raw.githubusercontent.com/nukc/LoadMoreWrapper/master/images/staggeredgrid.gif" style="width: 270px">
 
 ## Installation
 
@@ -43,6 +43,21 @@ Step 2. Add the dependency
 ```gradle
     dependencies {
         implementation 'com.github.nukc:LoadMoreWrapper:v1.9.1'
+    }
+```
+AndroidX
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        ...
+        maven("https://jitpack.io")
+    }
+}
+```
+```gradle
+    dependencies {
+        implementation("com.github.nukc:LoadMoreWrapper:v1.9.2")
     }
 ```
 
