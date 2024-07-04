@@ -57,7 +57,7 @@ dependencyResolutionManagement {
 ```
 ```gradle
     dependencies {
-        implementation("com.github.nukc:LoadMoreWrapper:v1.9.2")
+        implementation("com.github.nukc:LoadMoreWrapper:v1.9.3")
     }
 ```
 
